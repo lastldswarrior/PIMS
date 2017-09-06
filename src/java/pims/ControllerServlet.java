@@ -8,6 +8,8 @@ package pims;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,21 +33,38 @@ public class ControllerServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
         
         String user = request.getParameter("username");
         String pass = request.getParameter("userpass");
         
         //request.setAttribute("pass", pass);
         
+        //CALL THE DB CONNECTION ONE TIME, THEN PASS IT AROUND
         DBConnect db = new DBConnect();
-        //String returnThis = db.returnThis("epic");
-        String level = db.validate(user, pass);
+        db.connect();
         
-        request.setAttribute("pass", level);
+        AuthenticateUser au = new AuthenticateUser(db.getConn());
+        String levelOfAccess = au.validate(user, pass);
+        
+        switch(levelOfAccess){
+            case "Admin":
+                request.getRequestDispatcher("admin.jsp").forward(request, response);
+                break;
+                
+            default:
+                request.setAttribute("pass", levelOfAccess);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+                break;
+        }    
+//        
+        //String returnThis = db.returnThis("epic");
+//        String level = db.validate(user, pass);
+        
+//        request.setAttribute("pass", levelOfAccess);
         
 //        if(level.length() > 1){
-//            request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+            
 //        }
         
     }
@@ -75,8 +94,12 @@ public class ControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         
-        processRequest(request, response);        
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        try {        
+            processRequest(request, response);
+//        request.getRequestDispatcher("index.jsp").forward(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

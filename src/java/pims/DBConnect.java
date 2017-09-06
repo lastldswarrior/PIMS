@@ -1,59 +1,48 @@
 package pims;
 
-
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Jared
  */
 public class DBConnect {
-
+    
+    private Connection conn;
+    
     public DBConnect() {
 
     }
-    
-    public String returnThis(String string){
-        return string;
+
+    public Connection getConn() {
+        return conn;
     }
 
-    public String validate(String name, String pass) {
+    public void setConn(Connection conn) {
+        this.conn = conn;
+    }
+    
+    /**
+     * Creates a connection to the Derby Database
+     * @throws Exception 3 types(no connection, driver name, or sql exception)
+     */
+    public void connect() throws Exception{
         try {
-            PreparedStatement pst = null;
-            ResultSet rs = null;
-            
+            //Connect to the database under the PatientDB schema
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/localDB", "PatientDB", "ninjas");
+            Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/localDB", "PatientDB", "ninjas");
             
-            if (!conn.isClosed()) {
-                System.out.println("Connected to: " + conn.getSchema());
+            //Set the connection, else throw an exception
+            if (!connection.isClosed()) {
+                this.conn = connection;
+            }else{
+                throw new Exception("No connection to the Database");
             }
-            String statement = "select * from PATIENTDB.USERS where USERS.USER_NAME='"+name+"' and USERS.USER_PASSWORD='"+pass+"'";
-            
-            pst = conn.prepareStatement(statement);
-            rs = pst.executeQuery();
-            String last = null;
-            while (rs.next()) {
-                last = rs.getString("LEVEL");
-            }
-            return last;
-            
             
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null,ex);
-            return null;
+            throw new Exception("Class not found or Driver Name has error", ex);
         } catch (SQLException ex) {
-            Logger.getLogger(DBConnect.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            throw new Exception("A SQL Exception has occurred", ex);
         }
-        
     }
 }
 
