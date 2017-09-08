@@ -9,9 +9,27 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Admin Page</title>
     </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+    <form name="Admin" action="ControllerServlet" method="post">
+        <input type="hidden" name="page" value='admin.jsp' /></td><%-- This one works --%>
+        == Admin Page == ${announcement}<%-- This one works --%>
+        <fieldset style="width: 300px">
+                <legend> Change User Password </legend>
+                <table>
+                    <tr>
+                        <td>User ID</td>
+                        <td><input type="text" name="username" required="required" /></td>
+                    </tr>
+                    <tr>
+                        <td>New Password</td>
+                        <td><input type="password" name="newpass" required="required" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Change Password" /></td>
+                    </tr>
+                </table>
+            </fieldset>
+        
+    </form>
 </html>

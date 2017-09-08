@@ -29,6 +29,7 @@
                 </table>
             </fieldset>
              ${pass}<%-- This one works --%>
+            <input type="hidden" name="page" value='index.jsp' /></td><%-- This one works --%>
         </form>
     </body>
 </html>

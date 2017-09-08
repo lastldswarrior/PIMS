@@ -35,28 +35,80 @@ public class ControllerServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
         
-        String user = request.getParameter("username");
-        String pass = request.getParameter("userpass");
+             
+        String pageName = request.getParameter("page");
         
-        //request.setAttribute("pass", pass);
         
-        //CALL THE DB CONNECTION ONE TIME, THEN PASS IT AROUND
-        DBConnect db = new DBConnect();
-        db.connect();
-        
-        AuthenticateUser au = new AuthenticateUser(db.getConn());
-        String levelOfAccess = au.validate(user, pass);
-        
-        switch(levelOfAccess){
-            case "Admin":
+        //from any jsp page, handle routing
+        switch (pageName) {
+            case "index.jsp":
+                String user = request.getParameter("username");
+                String pass = request.getParameter("userpass");   
+                
+                DBConnect db = new DBConnect();
+                db.connect();
+
+                AuthenticateUser au = new AuthenticateUser(db.getConn());
+                String levelOfAccess = au.validate(user, pass);
+                
+                //from index go to which page
+                switch (levelOfAccess) {
+                    case "Admin":
+                        request.setAttribute("pass", levelOfAccess);
+                        request.getRequestDispatcher("admin.jsp").forward(request, response);
+                        break;
+                    case "Doctor":
+                        break;
+                    default:
+                        request.setAttribute("pass", levelOfAccess);
+                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                        break;
+                }
                 request.getRequestDispatcher("admin.jsp").forward(request, response);
                 break;
+            case "admin.jsp":
+                String a_user = request.getParameter("username");
+                String newPass = request.getParameter("newpass");      
+        
+                db = new DBConnect();
+                db.connect();
                 
+                User userObj = new User(db.getConn());
+                boolean changed = userObj.changePassword(a_user, newPass);
+                
+                if(changed){
+                    request.setAttribute("announcement", "Updated Password");
+                    request.getRequestDispatcher("admin.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("pass", "failed to change password");
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                }                
+                break;
             default:
-                request.setAttribute("pass", levelOfAccess);
+                //request.setAttribute("pass", levelOfAccess);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
                 break;
-        }    
+            
+        }
+        //request.setAttribute("pass", pageName);
+        
+        //CALL THE DB CONNECTION ONE TIME, THEN PASS IT AROUND
+//        DBConnect db = new DBConnect();
+//        db.connect();
+//        
+//        AuthenticateUser au = new AuthenticateUser(db.getConn());
+//        String levelOfAccess = au.validate(user, pass);
+//        
+//        switch(levelOfAccess){
+//            case "Admin":
+//                request.getRequestDispatcher("admin.jsp").forward(request, response);
+//                break;
+//                
+//            default:
+//                request.setAttribute("pass", levelOfAccess);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+//                break;
+//        }    
 //        
         //String returnThis = db.returnThis("epic");
 //        String level = db.validate(user, pass);
