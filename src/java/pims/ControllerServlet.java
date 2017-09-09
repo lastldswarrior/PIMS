@@ -42,23 +42,30 @@ public class ControllerServlet extends HttpServlet {
         //from any jsp page, handle routing
         switch (pageName) {
             case "index.jsp":
-                String user = request.getParameter("username");
+                String username = request.getParameter("username");
                 String pass = request.getParameter("userpass");   
                 
                 DBConnect db = new DBConnect();
                 db.connect();
 
-                AuthenticateUser au = new AuthenticateUser(db.getConn());
-                String levelOfAccess = au.validate(user, pass);
+                User user = new User(db.getConn());
+                user.setUserName(username);
+                user.setUserPassword(pass);
+                String levelOfAccess = user.validate();
+                user.countUsers();
                 
                 //from index go to which page
                 switch (levelOfAccess) {
-                    case "Admin":
-                        request.setAttribute("pass", levelOfAccess);
-                        request.getRequestDispatcher("admin.jsp").forward(request, response);
+                    case "Admin":                        
+                        request.setAttribute("user", user.getUserName());
+                        request.setAttribute("userCount", user.getUserCount());
+                        request.getRequestDispatcher("adminpanel.jsp").forward(request, response);
                         break;
                     case "Doctor":
                         break;
+                        
+                        
+                        
                     default:
                         request.setAttribute("pass", levelOfAccess);
                         request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -74,6 +81,8 @@ public class ControllerServlet extends HttpServlet {
                 db.connect();
                 
                 User userObj = new User(db.getConn());
+                
+                
                 boolean changed = userObj.changePassword(a_user, newPass);
                 
                 if(changed){

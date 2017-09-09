@@ -20,9 +20,22 @@ public class User {
     private String userName;
     private String userPassword;
     private String level;
+    private int userCount;
         
+    public User(){
+        
+    }
+    
     public User(Connection connection){
          this.conn = connection;
+    }
+
+    public int getUserCount() {
+        return userCount;
+    }
+
+    public void setUserCount(int userCount) {
+        this.userCount = userCount;
     }
 
     public String getUserName() {
@@ -65,6 +78,56 @@ public class User {
             
         } catch (SQLException ex) {
             return false;
+        }
+    }
+    
+    //validate user is in our users table
+    public String validate() {        
+        try {
+            String statement
+                    = "SELECT "
+                    + "* "
+                    + "FROM "
+                    + "PATIENTDB.USERS "
+                    + "WHERE "
+                    + "USERS.USER_NAME = '" + this.userName + "' "
+                    + "and USERS.USER_PASSWORD = '" + this.userPassword + "'";
+            
+            PreparedStatement pst = conn.prepareStatement(statement);
+            ResultSet rs = pst.executeQuery();
+            String last = "Login Failed, Please try again";
+            while (rs.next()) {
+                last = rs.getString("LEVEL");
+            }
+            this.level = last;
+            
+            return last;
+        } catch (SQLException ex) {
+            this.level = "Unvalidated";
+            return null;
+        }
+    }
+    
+    public void countUsers() {        
+        try {
+            String statement
+                    = "SELECT "
+                    + "COUNT(*) "
+                    + "FROM "
+                    + "PATIENTDB.USERS";
+            
+            PreparedStatement pst = conn.prepareStatement(statement);
+            ResultSet rs = pst.executeQuery();
+            int result = -1;
+            while (rs.next()) {
+                result = rs.getInt(1);
+            }
+            this.userCount = result;
+            
+            
+        } catch (SQLException ex) {
+            this.userCount = -1;
+            
         }
     }
     
