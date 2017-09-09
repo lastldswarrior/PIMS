@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Jared
  */
-@WebServlet("/ControllerServlet")
+@WebServlet(name="ControllerServlet", urlPatterns="/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
 
     /**
@@ -37,7 +37,7 @@ public class ControllerServlet extends HttpServlet {
         
              
         String pageName = request.getParameter("page");
-        
+        System.out.println(pageName);
         
         //from any jsp page, handle routing
         switch (pageName) {
@@ -71,7 +71,7 @@ public class ControllerServlet extends HttpServlet {
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                         break;
                 }
-                request.getRequestDispatcher("admin.jsp").forward(request, response);
+//                request.getRequestDispatcher("admin.jsp").forward(request, response);
                 break;
             case "admin.jsp":
                 String a_user = request.getParameter("username");
@@ -80,8 +80,7 @@ public class ControllerServlet extends HttpServlet {
                 db = new DBConnect();
                 db.connect();
                 
-                User userObj = new User(db.getConn());
-                
+                User userObj = new User(db.getConn());                
                 
                 boolean changed = userObj.changePassword(a_user, newPass);
                 
@@ -93,8 +92,21 @@ public class ControllerServlet extends HttpServlet {
                     request.getRequestDispatcher("index.jsp").forward(request, response);
                 }                
                 break;
+            case "adminpanel.jsp":
+                String dash = request.getParameter("dashboard");
+                switch(dash){
+                    case "user":
+                        request.setAttribute("doctorCount", "9000");
+                        request.getRequestDispatcher("userpanel.jsp").forward(request, response);
+                        break;
+                    default:
+                        break;
+                }
+//                request.setAttribute("pass", "From users page");
+//                request.getRequestDispatcher("index.jsp").forward(request, response);
+                break;
             default:
-                //request.setAttribute("pass", levelOfAccess);
+                request.setAttribute("pass", "Default Switch");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
                 break;
             
@@ -115,7 +127,7 @@ public class ControllerServlet extends HttpServlet {
 //                
 //            default:
 //                request.setAttribute("pass", levelOfAccess);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+//                request.getRequestDispatcher("index.jsp").forward(request, response);
 //                break;
 //        }    
 //        
@@ -141,7 +153,12 @@ public class ControllerServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        //processRequest(request, response);
+        try {        
+            processRequest(request, response);
+//        request.getRequestDispatcher("index.jsp").forward(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
