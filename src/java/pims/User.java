@@ -131,4 +131,54 @@ public class User {
         }
     }
     
+    public ResultSet getAllUsers() {
+        try {
+            String statement
+                    = "SELECT "
+                    + "* "
+                    + "FROM "
+                    + "PATIENTDB.USERS";
+
+            PreparedStatement pst = conn.prepareStatement(statement);
+            ResultSet rs = pst.executeQuery();
+            return rs;
+
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    public boolean addUser(String user, String pass, String level){
+        try {
+            String add = "INSERT INTO PATIENTDB.USERS (USER_NAME, USER_PASSWORD, LEVEL) "
+                    + "VALUES ('"+user+"','"+pass+"','"+level+"')";
+                   
+                        
+            PreparedStatement ps = conn.prepareStatement(add);
+            ps.execute();
+            
+            return true;
+            
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+    public boolean changeAccess(String user, String level){
+        try {
+             String access = "UPDATE PATIENTDB.USERS "
+                    + "SET "
+                        + "LEVEL = '"+level+"' "
+                    + "WHERE "
+                        + "USERS.USER_NAME = '"+user+"'";
+                   
+                        
+            PreparedStatement ps = conn.prepareStatement(access);
+            ps.execute();
+            
+            return true;
+            
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
 }

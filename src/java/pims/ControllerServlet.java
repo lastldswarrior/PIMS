@@ -8,6 +8,9 @@ package pims;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -75,28 +78,70 @@ public class ControllerServlet extends HttpServlet {
                 break;
             case "admin.jsp":
                 String a_user = request.getParameter("username");
-                String newPass = request.getParameter("newpass");      
-        
+                String newPass = request.getParameter("a_pass");
+                //New user
+                String new_name = request.getParameter("newusername");
+                String new_pass = request.getParameter("newpass");
+                String new_access = request.getParameter("newaccess");
+                //Change access                 
+                String b_user = request.getParameter("access_username");
+                String access = request.getParameter("access"); 
+                
                 db = new DBConnect();
                 db.connect();
                 
-                User userObj = new User(db.getConn());                
-                
-                boolean changed = userObj.changePassword(a_user, newPass);
-                
-                if(changed){
-                    request.setAttribute("announcement", "Updated Password");
-                    request.getRequestDispatcher("admin.jsp").forward(request, response);
-                }else{
-                    request.setAttribute("pass", "failed to change password");
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
-                }                
+                User modifyUser = new User(db.getConn());                
+                if (!newPass.isEmpty()) {
+                    boolean changed = modifyUser.changePassword(a_user, newPass);
+
+                    if (changed) {
+                        request.setAttribute("announcement", "Updated Password");
+                        request.getRequestDispatcher("admin.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("pass", "failed to change password");
+                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                    }
+                }else if (!new_name.isEmpty()) {
+                    boolean changed = modifyUser.addUser(new_name, new_pass,new_access);
+                    
+                    if (changed) {
+                        request.setAttribute("announcement", "User Added");
+                        request.getRequestDispatcher("admin.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("pass", "failed to add user");
+                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                    }
+                }else if (!access.isEmpty()) {
+                    boolean changed = modifyUser.changeAccess(b_user, access);
+
+                    if (changed) {
+                        request.setAttribute("announcement", "Updated Access");
+                        request.getRequestDispatcher("admin.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("pass", "failed to update access");
+                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                    }
+                }
                 break;
             case "adminpanel.jsp":
                 String dash = request.getParameter("dashboard");
                 switch(dash){
                     case "user":
-                        request.setAttribute("doctorCount", "9000");
+                        List<User> users = new ArrayList();
+                        db = new DBConnect();
+                        db.connect();
+
+                        User appUsers = new User(db.getConn());
+                        ResultSet allUsers = appUsers.getAllUsers();
+                        while(allUsers.next()){
+                            User one = new User();
+                            one.setUserName(allUsers.getString("USER_NAME"));
+                            one.setLevel(allUsers.getString("LEVEL"));
+                            users.add(one);
+                        }
+                        
+                        request.setAttribute("doctorCount", "8000");
+                        request.setAttribute("users", users);
                         request.getRequestDispatcher("userpanel.jsp").forward(request, response);
                         break;
                     default:

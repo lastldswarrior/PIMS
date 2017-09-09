@@ -4,7 +4,7 @@
     Author     : Jared
 <%@page import="pims.User"%>
 --%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -113,7 +113,33 @@
                     </div>
                 </div>
             </div>
-
+            <div class="w3-container">                
+                <a href="admin.jsp" class="w3-btn w3-blue w3-round-xlarge">Add New User</a>
+                <a href="admin.jsp" class="w3-btn w3-blue w3-round-xlarge">Change User Password</a>
+                <a href="admin.jsp" class="w3-btn w3-blue w3-round-xlarge">Change User Access</a>
+                
+            </div>
+            <br>
+            <div class="w3-container">
+                <table class="w3-table w3-striped w3-bordered w3-border w3-black w3-white">
+                    <tr>
+                        <td>Account Names</td>
+                        <td>Level of Access</td>
+                    </tr>   
+                </table>                  
+                
+                <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                    <c:forEach items="${users}" var="user">
+                        <tr>
+                            <td><c:out value="${user.userName}" /></td>
+                            <td><c:out value="${user.level}" /></td>
+                        </tr>
+                    </c:forEach>
+                </table><br>
+                <button class="w3-button w3-dark-grey">More Countries  <i class="fa fa-arrow-right"></i></button>
+            </div>
+                        
+                        
             <div class="w3-panel">
                 <div class="w3-row-padding" style="margin:0 -16px">
                     <div class="w3-third">
@@ -182,36 +208,7 @@
             </div>
             <hr>
 
-            <div class="w3-container">
-                <h5>Countries</h5>
-                <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-                    <tr>
-                        <td>United States</td>
-                        <td>65%</td>
-                    </tr>
-                    <tr>
-                        <td>UK</td>
-                        <td>15.7%</td>
-                    </tr>
-                    <tr>
-                        <td>Russia</td>
-                        <td>5.6%</td>
-                    </tr>
-                    <tr>
-                        <td>Spain</td>
-                        <td>2.1%</td>
-                    </tr>
-                    <tr>
-                        <td>India</td>
-                        <td>1.9%</td>
-                    </tr>
-                    <tr>
-                        <td>France</td>
-                        <td>1.5%</td>
-                    </tr>
-                </table><br>
-                <button class="w3-button w3-dark-grey">More Countries  <i class="fa fa-arrow-right"></i></button>
-            </div>
+            
             <hr>
             <div class="w3-container">
                 <h5>Recent Users</h5>
