@@ -64,9 +64,25 @@ public class ControllerServlet extends HttpServlet {
                         request.setAttribute("userCount", user.getUserCount());
                         request.getRequestDispatcher("adminpanel.jsp").forward(request, response);
                         break;
-                    case "Doctor":
+                    case "Volunteer":
+                        List<User> patients = new ArrayList();
+                        db = new DBConnect();
+                        db.connect();
+
+                        User appUsers = new User(db.getConn());
+                        ResultSet allUsers = appUsers.getAllUsers();
+                        while (allUsers.next()) {
+                            User one = new User();
+                            one.setUserName(allUsers.getString("USER_NAME"));
+
+                            patients.add(one);
+                        }
+
+                        request.setAttribute("patients", patients);
+                        request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
+                       
                         break;
-                        
+
                         
                         
                     default:
@@ -149,6 +165,26 @@ public class ControllerServlet extends HttpServlet {
                 }
 //                request.setAttribute("pass", "From users page");
 //                request.getRequestDispatcher("index.jsp").forward(request, response);
+                break;
+            case "volunteerpanel.jsp":
+                List<User> patients = new ArrayList();
+                db = new DBConnect();
+                db.connect();
+                String letter = request.getParameter("v_first_name");
+                System.out.println(letter);
+                User appUsers = new User(db.getConn());
+                ResultSet allUsers = appUsers.getUserStartWith(letter);
+                while (allUsers.next()) {
+                    User one = new User();
+                    one.setUserName(allUsers.getString("USER_NAME"));
+                    
+                    patients.add(one);
+                }
+                
+                request.setAttribute("patients", patients);
+                request.setAttribute("v", letter);
+                request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
+                
                 break;
             default:
                 request.setAttribute("pass", "Default Switch");

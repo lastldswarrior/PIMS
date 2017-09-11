@@ -147,6 +147,28 @@ public class User {
             return null;
         }
     }
+    
+    public ResultSet getUserStartWith(String letter) {
+        String lower = letter.toLowerCase();
+        String upper = letter.toUpperCase();
+        try {
+            String statement
+                    = "SELECT "
+                    + "* "
+                    + "FROM "
+                    + "PATIENTDB.USERS "
+                    + "WHERE "
+                    + "USER_NAME like '"+upper+"%' "
+                    + "or USER_NAME like '"+lower+"%'";
+
+            PreparedStatement pst = conn.prepareStatement(statement);
+            ResultSet rs = pst.executeQuery();
+            return rs;
+
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
 
     public boolean addUser(String user, String pass, String level){
         try {
