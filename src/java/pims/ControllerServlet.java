@@ -79,11 +79,22 @@ public class ControllerServlet extends HttpServlet {
                         }
 
                         request.setAttribute("patients", patients);
-                        request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
-                       
-                        break;
 
-                        
+                        //Patients
+                        List<Patient> patientList = new ArrayList();
+                        Patient patient = new Patient(db.getConn());
+                        ResultSet allPatients = patient.getAllPatients();
+
+                        while (allPatients.next()) {
+                            Patient p = new Patient();
+                            String first = allPatients.getString("FIRST_NAME");
+                            String last = allPatients.getString("LAST_NAME");
+                            p.setDisplayName(first + " " + last);                           
+                            patientList.add(p);
+                        }
+                        request.setAttribute("vol_info", patientList);
+                        request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
+                        break;
                         
                     default:
                         request.setAttribute("pass", levelOfAccess);
@@ -167,22 +178,34 @@ public class ControllerServlet extends HttpServlet {
 //                request.getRequestDispatcher("index.jsp").forward(request, response);
                 break;
             case "volunteerpanel.jsp":
-                List<User> patients = new ArrayList();
+                List<User> users = new ArrayList();
                 db = new DBConnect();
                 db.connect();
                 String letter = request.getParameter("v_first_name");
-                System.out.println(letter);
-                User appUsers = new User(db.getConn());
-                ResultSet allUsers = appUsers.getUserStartWith(letter);
-                while (allUsers.next()) {
-                    User one = new User();
-                    one.setUserName(allUsers.getString("USER_NAME"));
-                    
-                    patients.add(one);
-                }
+                //System.out.println(letter);
+//                User appUsers = new User(db.getConn());
+//                ResultSet allUsers = appUsers.getUserStartWith(letter);
+//                while (allUsers.next()) {
+//                    User one = new User();
+//                    one.setUserName(allUsers.getString("USER_NAME"));                    
+//                    users.add(one);
+//                }
+//                
+//                request.setAttribute("patients", users);
                 
-                request.setAttribute("patients", patients);
-                request.setAttribute("v", letter);
+                //Patients
+                List<Patient> patients = new ArrayList();
+                Patient patient = new Patient(db.getConn());
+                ResultSet allPatients = patient.getAllPatients();
+                
+                while (allPatients.next()) {
+                    Patient p = new Patient();
+                    String temp = allPatients.getString("FIRST_NAME");
+                    System.out.println(temp);
+                    p.setFirstName(allPatients.getString("FIRST_NAME"));                    
+                    patients.add(p);
+                }
+                request.setAttribute("vol_info", patients);
                 request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                 
                 break;

@@ -27,7 +27,7 @@ public class User {
     }
     
     public User(Connection connection){
-         this.conn = connection;
+        this.conn = connection;
     }
 
     public int getUserCount() {
@@ -149,8 +149,10 @@ public class User {
     }
     
     public ResultSet getUserStartWith(String letter) {
-        String lower = letter.toLowerCase();
-        String upper = letter.toUpperCase();
+        String temp = letter.replaceAll("[\\*]", "%");
+        System.out.println(temp); 
+        String upper = temp.toUpperCase();        
+        
         try {
             String statement
                     = "SELECT "
@@ -158,8 +160,8 @@ public class User {
                     + "FROM "
                     + "PATIENTDB.USERS "
                     + "WHERE "
-                    + "USER_NAME like '"+upper+"%' "
-                    + "or USER_NAME like '"+lower+"%'";
+                    + "UPPER(USER_NAME) like UPPER('"+upper+"')";
+                    
 
             PreparedStatement pst = conn.prepareStatement(statement);
             ResultSet rs = pst.executeQuery();
