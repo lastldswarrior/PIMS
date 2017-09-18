@@ -181,7 +181,8 @@ public class ControllerServlet extends HttpServlet {
                 List<User> users = new ArrayList();
                 db = new DBConnect();
                 db.connect();
-                String letter = request.getParameter("v_first_name");
+                String v_first = request.getParameter("v_first_name");
+                String v_last = request.getParameter("v_last_name");
                 //System.out.println(letter);
 //                User appUsers = new User(db.getConn());
 //                ResultSet allUsers = appUsers.getUserStartWith(letter);
@@ -196,13 +197,16 @@ public class ControllerServlet extends HttpServlet {
                 //Patients
                 List<Patient> patients = new ArrayList();
                 Patient patient = new Patient(db.getConn());
-                ResultSet allPatients = patient.getAllPatients();
+                ResultSet allPatients = null;
+                if(!v_first.isEmpty()){
+                    allPatients = patient.getVolunteerFirst(v_first);
+                }                
                 
                 while (allPatients.next()) {
                     Patient p = new Patient();
-                    String temp = allPatients.getString("FIRST_NAME");
-                    System.out.println(temp);
-                    p.setFirstName(allPatients.getString("FIRST_NAME"));                    
+                    String first = allPatients.getString("FIRST_NAME");
+                    String last = allPatients.getString("LAST_NAME");
+                    p.setDisplayName(first + " " + last);                    
                     patients.add(p);
                 }
                 request.setAttribute("vol_info", patients);

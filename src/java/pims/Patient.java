@@ -118,7 +118,9 @@ public class Patient {
         }
     }
     
-    public ResultSet getVisitorData() {
+    public ResultSet getVolunteerFirst(String first) {
+        String first_temp = first.replaceAll("[\\*]", "%");        
+        String upper_first = first_temp.toUpperCase();    
         try {
             String statement
                     = "SELECT "
@@ -126,7 +128,30 @@ public class Patient {
                     + "FROM "
                     + "PATIENTDB.PATIENT "
                     + "WHERE "
-                    + "PATIENT.LAST_NAME like 'Paul%'";
+                    + "UPPER(PATIENT.FIRST_NAME) like UPPER('"+upper_first+"')";
+
+            PreparedStatement pst = conn.prepareStatement(statement);
+            ResultSet rs = pst.executeQuery();
+            return rs;
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+    
+    public ResultSet getVolunteerLast(String last) {
+        String last_temp = last.replaceAll("[\\*]", "%");
+        String upper_last = last_temp.toUpperCase();
+        
+        try {
+            String statement
+                    = "SELECT "
+                    + "* "
+                    + "FROM "
+                    + "PATIENTDB.PATIENT "
+                    + "WHERE "
+                    + "UPPER(PATIENT.LAST_NAME) like UPPER('"+upper_last+"')";
 
             PreparedStatement pst = conn.prepareStatement(statement);
             ResultSet rs = pst.executeQuery();
