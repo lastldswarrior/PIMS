@@ -5,6 +5,7 @@
 --%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -20,7 +21,7 @@
 
                 background-image: url("loginScreen.jpg");
 
-                height: 50%; 
+                height: 60%; 
 
                 background-position: center;
                 background-repeat: no-repeat;
@@ -38,63 +39,141 @@
     </head>
     <body>
         <div class="bg">
-            
-            <form name="Volunteer" action="ControllerServlet" method="post">
+            <a href="adminpanel.jsp" class="w3-btn w3-blue w3-round-xlarge">Return to Dashboard</a>
+            <form name="Volunteer" id="vPage" action="ControllerServlet" method="post">
                 <input type="hidden" name="page" value='volunteerpanel.jsp' /><%-- This one works --%>
-                <div class="w3-display-middle" style="height:750px;width:400px">
+                <br><br>
+                <div class="w3-row-padding">
+                    <div class="w3-col s1 w3-center" style="width:100px">&zwnj;</div>
+                    <div class="w3-col s4">
                     <table>
                         <tr>
-                            <div class="w3-round-large w3-border w3-black w3-center" style="font-family:Arial, FontAwesome" >
-                                <h2>Patient Search</h2>
-                            </div>
-                        </tr>
-                        <br>
+                            <td colspan="3">
+                                <div class="w3-display-container" style="width:400px"></div>
+                                <div class="w3-round-large w3-border w3-black w3-center w3-block" style="font-family:Arial, FontAwesome;width:100%" >
+                                    <h2>Patient Search</h2>
+                                </div>
+                                </div>
+                            </td>
+
+                        </tr>                      
                         <tr>
-                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                                   name="v_first_name" type="text" placeholder="&#xf007; First Name">
-                            <br>
+                            <td colspan="2">
+                                <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                       name="v_first_name" type="text" placeholder="&#xf007; First Name">
+                            </td>
+                       
+                        <td colspan="2">
                             <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black w3-hover-blue" 
-                                    style="font-family:Arial, FontAwesome" type="submit">Search by First Name                  
+                                    style="font-family:Arial, FontAwesome" type="submit">Search                  
                             </button>
+                        </td>   
                         </tr>
-                        <br>
-                        <tr>
-                        <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                               name="v_last_name" type="password" placeholder="&#xf007; Last Name">
-                        <br>
-                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black w3-hover-red" 
-                                    style="font-family:Arial, FontAwesome" type="submit">Search by Last Name                  
-                            </button>
-                        </tr>
-                        <br>
                         
+                        <tr>
+                            <td colspan="2">
+                                <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                       name="v_last_name" type="text" placeholder="&#xf007; Last Name">
+                            </td>
+                        
+                        <td>
+                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black w3-hover-red" 
+                                    style="font-family:Arial, FontAwesome" type="submit">Search                  
+                            </button>
+                        </td>
+                        </tr>
                     </table>   
-                    
                 </div>
-            </form>
-            </form>
+            <div class="w3-col s2 w3-center" style="width:15%">&zwnj;></div>    
+            <div class="w3-col s4 w3-center"><table>
+                    <tr>
+                        <td colspan="3">
+                            <div class="w3-round-large w3-border w3-black w3-center w3-block" style="font-family:Arial, FontAwesome;width:100%">
+                                <h2>Patient Found</h2>
+                            </div>
+                        </td> 
+                    </tr>                      
+                    <tr>
+                        <td colspan="2">
+                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
+                                    style="font-family:Arial, FontAwesome">Full Name:                
+                            </button>
+                        </td> 
+                        <td>
+                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                   name="v_display_name" id="temp" type="text" value="${v_display_name}">
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
+                                    style="font-family:Arial, FontAwesome">Room Number:                
+                            </button>
+                        </td> 
+                        <td colspan="2">
+                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                   name="v_display_room" type="text" value="${v_display_room}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
+                                    style="font-family:Arial, FontAwesome"># of Vistors:                
+                            </button>
+                        </td>
+                        <td colspan="2">
+                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                   name="v_display_count" type="text" value="${v_display_count}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
+                                    style="font-family:Arial, FontAwesome">Approved Visitors:                
+                            </button>
+                        </td>
+                        <td colspan="2">
+                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                   name="v_display_room" type="text" >
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+            <div class="w3-col s1 w3-center"></div>            
+                        </div>
+                        </div>
         </div>
-        <a href="adminpanel.jsp" class="w3-btn w3-blue w3-round-xlarge">Return to Dashboard</a>
-        <br>
+        
+
+
         <div class="w3-container">
-            <table class="w3-table w3-striped w3-bordered w3-border w3-black w3-white">
+            <input type="hidden" name="selected" value="none">
+            <table class="w3-table w3-bordered w3-border w3-black">
                 <tr>
-                    <td>Patient</td>
-                    <td>Room Number</td>
-                    <td>Max # of Vistors</td>
-                    <td>List of Approved Vistors</td>
+                    <td>Patients</td>
+
                 </tr>   
             </table>                  
-
-            <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <table class="w3-table-all w3-striped w3-bordered w3-border w3-hoverable w3-white">
                 <c:forEach items="${vol_info}" var="pa">
-                    <tr>
-                        <td><c:out value="${pa.displayName}"/></td>
+                    <tr >
+                        
+                        <td class="myrow" id="${pa.displayName}"><c:out value="${pa.displayName}"/></td>
+
                     </tr>
                 </c:forEach>
-            </table><br>
-            <button class="w3-button w3-dark-grey">More Countries  <i class="fa fa-arrow-right"></i></button>
-        </div>
+            </table>
 
-    </body>
+        </div>
+        </form>
+        <script>
+            $('.myrow').click(function () {                
+                var chosenPatient = $(this).attr('id');                
+                document.getElementById("temp").value=chosenPatient;
+                document.getElementById("vPage").submit();
+            })
+        </script>
+</body>
 </html>

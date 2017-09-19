@@ -183,6 +183,7 @@ public class ControllerServlet extends HttpServlet {
                 db.connect();
                 String v_first = request.getParameter("v_first_name");
                 String v_last = request.getParameter("v_last_name");
+                String v_found = request.getParameter("v_display_name");
                 //System.out.println(letter);
 //                User appUsers = new User(db.getConn());
 //                ResultSet allUsers = appUsers.getUserStartWith(letter);
@@ -198,18 +199,29 @@ public class ControllerServlet extends HttpServlet {
                 List<Patient> patients = new ArrayList();
                 Patient patient = new Patient(db.getConn());
                 ResultSet allPatients = null;
-                if(!v_first.isEmpty()){
-                    allPatients = patient.getVolunteerFirst(v_first);
-                }                
-                
-                while (allPatients.next()) {
-                    Patient p = new Patient();
-                    String first = allPatients.getString("FIRST_NAME");
-                    String last = allPatients.getString("LAST_NAME");
-                    p.setDisplayName(first + " " + last);                    
-                    patients.add(p);
+                if(v_found.isEmpty()){
+                    if(!v_first.isEmpty()){
+                        allPatients = patient.getVolunteerFirst(v_first);
+                    }                
+                    if(!v_last.isEmpty()){
+                        allPatients = patient.getVolunteerLast(v_last);
+                    }
+                    while (allPatients.next()) {
+                        Patient p = new Patient();
+                        String first = allPatients.getString("FIRST_NAME");
+                        String last = allPatients.getString("LAST_NAME");
+                        p.setDisplayName(first + " " + last);                    
+                        patients.add(p);
+                    }
+                    request.setAttribute("vol_info", patients);
+                }else{
+                    
+                    request.setAttribute("v_display_name", v_found);
+                    request.setAttribute("v_display_room", "777");
+                    request.setAttribute("v_display_count", "2");
                 }
-                request.setAttribute("vol_info", patients);
+                
+                
                 request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                 
                 break;
