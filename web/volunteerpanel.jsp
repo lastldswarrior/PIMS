@@ -84,8 +84,9 @@
                         </tr>
                     </table>   
                 </div>
-            <div class="w3-col s2 w3-center" style="width:15%">&zwnj;></div>    
-            <div class="w3-col s4 w3-center"><table>
+            <div class="w3-col s2 w3-center" style="width:15%">&zwnj;</div>    
+            <div class="w3-col s4 w3-center">
+                <table>
                     <tr>
                         <td colspan="3">
                             <div class="w3-round-large w3-border w3-black w3-center w3-block" style="font-family:Arial, FontAwesome;width:100%">
@@ -141,8 +142,8 @@
                 </table>
             </div>
             <div class="w3-col s1 w3-center"></div>            
-                        </div>
-                        </div>
+            </div>
+            </div>                        
         </div>
         
 

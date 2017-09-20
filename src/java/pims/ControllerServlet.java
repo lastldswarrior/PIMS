@@ -214,15 +214,18 @@ public class ControllerServlet extends HttpServlet {
                         patients.add(p);
                     }
                     request.setAttribute("vol_info", patients);
+                    request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                 }else{
-                    
+                   
                     request.setAttribute("v_display_name", v_found);
                     request.setAttribute("v_display_room", "777");
                     request.setAttribute("v_display_count", "2");
+                    request.setAttribute("v_display_visit", "Jackie Chan, Bruce Lee");
+                    request.getRequestDispatcher("volunteerResult.jsp").forward(request, response);
                 }
                 
                 
-                request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
+                
                 
                 break;
             default:
