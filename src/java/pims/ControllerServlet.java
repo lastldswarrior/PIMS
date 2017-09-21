@@ -41,7 +41,8 @@ public class ControllerServlet extends HttpServlet {
              
         String pageName = request.getParameter("page");
         System.out.println(pageName);
-        
+        String currentUser = request.getParameter("username");
+        System.out.println("Top: "+currentUser);
         //from any jsp page, handle routing
         switch (pageName) {
             case "index.jsp":
@@ -93,7 +94,8 @@ public class ControllerServlet extends HttpServlet {
 //                            p.setDisplayName(first + " " + last);                           
 //                            patientList.add(p);
 //                        }
-//                        request.setAttribute("vol_info", patientList);
+                        System.out.println("Vol_1: "+currentUser);
+                        request.setAttribute("user", currentUser);
                         request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                         break;
                         
@@ -179,6 +181,9 @@ public class ControllerServlet extends HttpServlet {
 //                request.getRequestDispatcher("index.jsp").forward(request, response);
                 break;
             case "volunteerpanel.jsp":
+                currentUser = request.getParameter("user");
+                System.out.println("Vol_2: "+currentUser);
+                request.setAttribute("user", currentUser);
                 List<User> users = new ArrayList();
                 db = new DBConnect();
                 db.connect();
