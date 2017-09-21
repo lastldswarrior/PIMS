@@ -21,7 +21,7 @@
 
                 background-image: url("loginScreen.jpg");
 
-                height: 60%; 
+                height: 100%; 
 
                 background-position: center;
                 background-repeat: no-repeat;
@@ -42,66 +42,25 @@
             <form name="vResult" id="vResult" action="ControllerServlet" method="post">
                 <br><br>
                 <div class="w3-row-padding">
-                    <div class="w3-col s1 w3-center w3-red">1</div>
-                    <div class="w3-col s4 w3-center w3-blue">
-                        <table>
-                            <tr>
-                                <td colspan="3">
-                                    <div class="w3-round-large w3-border w3-black w3-center w3-block" style="font-family:Arial, FontAwesome;width:100%">
-                                        <h2>Patient Found</h2>
-                                    </div>
-                                </td> 
-                            </tr>                      
-                            <tr>
-                                <td colspan="2">
-                                    <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
-                                            style="font-family:Arial, FontAwesome">Full Name:                
-                                    </button>
-                                </td> 
-                                <td>
-                                    <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                                           name="v_display_name" id="temp" type="text" value="${v_display_name}">
-                                </td> 
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
-                                            style="font-family:Arial, FontAwesome">Room Number:                
-                                    </button>
-                                </td> 
-                                <td colspan="2">
-                                    <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                                           name="v_display_room" type="text" value="${v_display_room}">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
-                                            style="font-family:Arial, FontAwesome"># of Vistors:                
-                                    </button>
-                                </td>
-                                <td colspan="2">
-                                    <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                                           name="v_display_count" type="text" value="${v_display_count}">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
-                                            style="font-family:Arial, FontAwesome">Approved Visitors:                
-                                    </button>
-                                </td>
-                                <td colspan="2">
-                                    <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                                           name="v_display_room" type="text" >
-                                </td>
-                            </tr>
+                    <div class="w3-col s1 w3-center">&zwnj;</div>
+                    <div class="w3-col s3 w3-white">
+                        <br>
+                        <label class="w3-text-blue"><b>First Name</b></label>
+                        <input class="w3-input w3-border w3-round-large" type="text" value="${v_first_name}">
 
-                        </table>
+                        <label class="w3-text-blue"><b>Last Name</b></label>
+                        <input class="w3-input w3-border w3-round-large" type="text" value="${v_last_name}">
+
+                        <label class="w3-text-blue"><b>Number of Visitors</b></label>
+                        <input class="w3-input w3-border w3-round-large" type="text">
+
+                        <label class="w3-text-blue"><b>List of Approved Visitors</b></label>
+                        <input class="w3-input w3-border w3-round-large" type="text">
+                        <br>
                     </div>
-                    <div class="w3-col s2 w3-center w3-yellow">2</div>
-                        <div class="w3-col s3 w3-white">
-                            <div class="w3-row w3-section">
+                    <div class="w3-col s3 w3-center">&zwnj;</div>
+                    <div class="w3-col s3 w3-white">
+                        <div class="w3-row w3-section">
                                 <div class="w3-rest">
                                     <label class="w3-text-blue"><b>Facility</b></label>
                                     <input class="w3-input w3-round-large w3-large w3-border"
@@ -130,27 +89,10 @@
                                 </div>
                             </div>
                         </div>
-                    <div class="w3-col s2 w3-center w3-red">2</div>
+                    <div class="w3-col s2 w3-center">&zwnj;</div>
                 </div>
             </form>    
         </div>
-        <div class="w3-row-padding">
-            <div class="w3-col s1 w3-center w3-blue">1</div>
-            <div class="w3-col s4">
-                <label class="w3-text-blue"><b>First Name</b></label>
-                <input class="w3-input w3-border" type="text" value="${v_display_name}">
-
-                <label class="w3-text-blue"><b>Last Name</b></label>
-                <input class="w3-input w3-border" type="text">
-            </div>
-            <div class="w3-col s2 w3-center w3-green">2</div>
-            <div class="w3-col s3"> 
-                <label class="w3-text-blue"><b>Number of Visitors</b></label>
-                <input class="w3-input w3-border" type="text">
-
-                <label class="w3-text-blue"><b>List of Approved Visitors</b></label>
-                <input class="w3-input w3-border" type="text">
-            </div>
-            <div class="w3-col s2 w3-center w3-yellow">2</div>
+        
     </body>
 </html>

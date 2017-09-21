@@ -65,34 +65,35 @@ public class ControllerServlet extends HttpServlet {
                         request.getRequestDispatcher("adminpanel.jsp").forward(request, response);
                         break;
                     case "Volunteer":
-                        List<User> patients = new ArrayList();
-                        db = new DBConnect();
-                        db.connect();
+//                        List<User> patients = new ArrayList();
+//                        db = new DBConnect();
+//                        db.connect();
 
-                        User appUsers = new User(db.getConn());
-                        ResultSet allUsers = appUsers.getAllUsers();
-                        while (allUsers.next()) {
-                            User one = new User();
-                            one.setUserName(allUsers.getString("USER_NAME"));
+                        //Used to get all users, but don't need here
+//                        User appUsers = new User(db.getConn());
+//                        ResultSet allUsers = appUsers.getAllUsers();
+//                        while (allUsers.next()) {
+//                            User one = new User();
+//                            one.setUserName(allUsers.getString("USER_NAME"));
+//
+//                            patients.add(one);
+//                        }
 
-                            patients.add(one);
-                        }
-
-                        request.setAttribute("patients", patients);
+//                        request.setAttribute("patients", patients);
 
                         //Patients
-                        List<Patient> patientList = new ArrayList();
-                        Patient patient = new Patient(db.getConn());
-                        ResultSet allPatients = patient.getAllPatients();
-
-                        while (allPatients.next()) {
-                            Patient p = new Patient();
-                            String first = allPatients.getString("FIRST_NAME");
-                            String last = allPatients.getString("LAST_NAME");
-                            p.setDisplayName(first + " " + last);                           
-                            patientList.add(p);
-                        }
-                        request.setAttribute("vol_info", patientList);
+//                        List<Patient> patientList = new ArrayList();
+//                        Patient patient = new Patient(db.getConn());
+//                        ResultSet allPatients = patient.getAllPatients();
+//
+//                        while (allPatients.next()) {
+//                            Patient p = new Patient();
+//                            String first = allPatients.getString("FIRST_NAME");
+//                            String last = allPatients.getString("LAST_NAME");
+//                            p.setDisplayName(first + " " + last);                           
+//                            patientList.add(p);
+//                        }
+//                        request.setAttribute("vol_info", patientList);
                         request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                         break;
                         
@@ -216,11 +217,29 @@ public class ControllerServlet extends HttpServlet {
                     request.setAttribute("vol_info", patients);
                     request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                 }else{
-                   
-                    request.setAttribute("v_display_name", v_found);
-                    request.setAttribute("v_display_room", "777");
-                    request.setAttribute("v_display_count", "2");
-                    request.setAttribute("v_display_visit", "Jackie Chan, Bruce Lee");
+                    Patient found = new Patient(db.getConn());
+                    String[] s_array = v_found.split(" ");    
+                    
+                    Patient foundIt = found.getPatient(s_array[0],s_array[1]);
+                    request.setAttribute("v_first_name", foundIt.getFirstName());
+                    request.setAttribute("v_last_name", foundIt.getLastName());
+                    
+                    ResultSet location = found.getLocation(foundIt);
+                    String facility = null;
+                    String floor = null;
+                    String room = null;
+                    String bed = null;
+                    while (location.next()) {
+                        facility = location.getString("FACILITY");
+                        floor = location.getString("FLOOR");
+                        room = location.getString("ROOM_NUMBER");
+                        bed = location.getString("BED_NUMBER");
+                    }
+                    request.setAttribute("v_facility", facility);
+                    request.setAttribute("v_floor", floor);
+                    request.setAttribute("v_room", room);
+                    request.setAttribute("v_bed", bed);
+                    
                     request.getRequestDispatcher("volunteerResult.jsp").forward(request, response);
                 }
                 
@@ -234,34 +253,7 @@ public class ControllerServlet extends HttpServlet {
                 break;
             
         }
-        //request.setAttribute("pass", pageName);
         
-        //CALL THE DB CONNECTION ONE TIME, THEN PASS IT AROUND
-//        DBConnect db = new DBConnect();
-//        db.connect();
-//        
-//        AuthenticateUser au = new AuthenticateUser(db.getConn());
-//        String levelOfAccess = au.validate(user, pass);
-//        
-//        switch(levelOfAccess){
-//            case "Admin":
-//                request.getRequestDispatcher("admin.jsp").forward(request, response);
-//                break;
-//                
-//            default:
-//                request.setAttribute("pass", levelOfAccess);
-//                request.getRequestDispatcher("index.jsp").forward(request, response);
-//                break;
-//        }    
-//        
-        //String returnThis = db.returnThis("epic");
-//        String level = db.validate(user, pass);
-        
-//        request.setAttribute("pass", levelOfAccess);
-        
-//        if(level.length() > 1){
-            
-//        }
         
     }
 

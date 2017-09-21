@@ -163,4 +163,64 @@ public class Patient {
         }
     }
     
+    public Patient getPatient(String first, String last) {
+        String upper_first = first.toUpperCase(); 
+        String upper_last = last.toUpperCase();
+        
+        try {
+            String statement
+                    = "SELECT "
+                    + "* "
+                    + "FROM "
+                    + "PATIENTDB.PATIENT "
+                    + "WHERE "
+                    + "UPPER(PATIENT.LAST_NAME) like UPPER('"+upper_last+"') "
+                    + "and UPPER(PATIENT.FIRST_NAME) like UPPER('"+upper_first+"')";
+            
+            
+            PreparedStatement pst = conn.prepareStatement(statement);
+            ResultSet rs = pst.executeQuery();
+            Patient one = new Patient();
+            while (rs.next()) {
+                one.setFirstName(rs.getString("FIRST_NAME"));
+                one.setLastName(rs.getString("LAST_NAME"));
+                one.setMiddleName(rs.getString("MIDDLE_NAME"));
+            }
+            return one;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+    
+    public ResultSet getLocation(Patient p) {
+        String upper_first = p.getFirstName().toUpperCase(); 
+        String upper_last = p.getLastName().toUpperCase();
+        
+        try {
+            String statement
+                    = "SELECT "
+                    + "loc.facility, "
+                    + "loc.floor, "
+                    + "loc.room_number, "
+                    + "loc.bed_number "
+                    
+                    + "FROM "
+                    + "PATIENTDB.PATIENT p, "
+                    + "PATIENTDB.LOCATION loc "
+                    + "WHERE "
+                    + "UPPER(p.LAST_NAME) like UPPER('"+upper_last+"') "
+                    + "and UPPER(p.FIRST_NAME) like UPPER('"+upper_first+"') "
+                    + "and p.id = loc.id";
+            System.out.println(statement);
+            PreparedStatement pst = conn.prepareStatement(statement);
+            ResultSet rs = pst.executeQuery();
+            return rs;
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+    
 }

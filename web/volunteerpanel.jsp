@@ -44,7 +44,7 @@
                 <input type="hidden" name="page" value='volunteerpanel.jsp' /><%-- This one works --%>
                 <br><br>
                 <div class="w3-row-padding">
-                    <div class="w3-col s1 w3-center" style="width:100px">&zwnj;</div>
+                    <div class="w3-col s1 w3-center">&zwnj;</div>
                     <div class="w3-col s4">
                     <table>
                         <tr>
@@ -85,65 +85,10 @@
                     </table>   
                 </div>
             <div class="w3-col s2 w3-center" style="width:15%">&zwnj;</div>    
-            <div class="w3-col s4 w3-center">
-                <table>
-                    <tr>
-                        <td colspan="3">
-                            <div class="w3-round-large w3-border w3-black w3-center w3-block" style="font-family:Arial, FontAwesome;width:100%">
-                                <h2>Patient Found</h2>
-                            </div>
-                        </td> 
-                    </tr>                      
-                    <tr>
-                        <td colspan="2">
-                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
-                                    style="font-family:Arial, FontAwesome">Full Name:                
-                            </button>
-                        </td> 
-                        <td>
-                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                                   name="v_display_name" id="temp" type="text" value="${v_display_name}">
-                        </td> 
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
-                                    style="font-family:Arial, FontAwesome">Room Number:                
-                            </button>
-                        </td> 
-                        <td colspan="2">
-                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                                   name="v_display_room" type="text" value="${v_display_room}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
-                                    style="font-family:Arial, FontAwesome"># of Vistors:                
-                            </button>
-                        </td>
-                        <td colspan="2">
-                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                                   name="v_display_count" type="text" value="${v_display_count}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black" 
-                                    style="font-family:Arial, FontAwesome">Approved Visitors:                
-                            </button>
-                        </td>
-                        <td colspan="2">
-                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                                   name="v_display_room" type="text" >
-                        </td>
-                    </tr>
-                    
-                </table>
+            <div class="w3-col s4 w3-center">&zwnj;</div>
+            <div class="w3-col s1 w3-center">&zwnj;</div>            
             </div>
-            <div class="w3-col s1 w3-center"></div>            
-            </div>
-            </div>                        
+                                 
         </div>
         
 
@@ -157,6 +102,7 @@
                 </tr>   
             </table>                  
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <input type="hidden" name="v_display_name" id="temp" value="${v_display_name}" /><%-- This one works --%>
             <table class="w3-table-all w3-striped w3-bordered w3-border w3-hoverable w3-white">
                 <c:forEach items="${vol_info}" var="pa">
                     <tr >
