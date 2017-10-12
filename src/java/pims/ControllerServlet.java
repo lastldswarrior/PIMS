@@ -94,7 +94,7 @@ public class ControllerServlet extends HttpServlet {
 //                            p.setDisplayName(first + " " + last);                           
 //                            patientList.add(p);
 //                        }
-                        System.out.println("Vol_1: "+currentUser);
+                        
                         request.setAttribute("user", currentUser);
                         request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                         break;
@@ -182,7 +182,7 @@ public class ControllerServlet extends HttpServlet {
                 break;
             case "volunteerpanel.jsp":
                 currentUser = request.getParameter("user");
-                System.out.println("Vol_2: "+currentUser);
+                
                 request.setAttribute("user", currentUser);
                 List<User> users = new ArrayList();
                 db = new DBConnect();
@@ -223,27 +223,34 @@ public class ControllerServlet extends HttpServlet {
                     request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                 }else{
                     Patient found = new Patient(db.getConn());
-                    String[] s_array = v_found.split(" ");    
+                    String[] s_array = v_found.split(" ");
                     
                     Patient foundIt = found.getPatient(s_array[0],s_array[1]);
                     request.setAttribute("v_first_name", foundIt.getFirstName());
                     request.setAttribute("v_last_name", foundIt.getLastName());
-                    
+                                        
                     ResultSet location = found.getLocation(foundIt);
                     String facility = null;
                     String floor = null;
                     String room = null;
                     String bed = null;
+                    String count = null;
+                    String visitors = null;
                     while (location.next()) {
                         facility = location.getString("FACILITY");
                         floor = location.getString("FLOOR");
                         room = location.getString("ROOM_NUMBER");
                         bed = location.getString("BED_NUMBER");
+                        count = location.getString("VISITOR_COUNT");
+                        visitors = location.getString("VISITORS");
+                        
                     }
                     request.setAttribute("v_facility", facility);
                     request.setAttribute("v_floor", floor);
                     request.setAttribute("v_room", room);
                     request.setAttribute("v_bed", bed);
+                    request.setAttribute("v_count", count);
+                    request.setAttribute("v_list", visitors);
                     
                     request.getRequestDispatcher("volunteerResult.jsp").forward(request, response);
                 }

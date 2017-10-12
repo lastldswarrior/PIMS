@@ -25,9 +25,18 @@ public class Patient {
     private String city;
     private String state;
     private String zip;
+    private String id;
     
     public Patient(){
         
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
     
     public Patient(Connection connection){
@@ -119,7 +128,7 @@ public class Patient {
     }
     
     public ResultSet getVolunteerFirst(String first) {
-        String first_temp = first.replaceAll("[\\*]", "%");        
+        String first_temp = first.replaceAll("[\\*]", "%");      
         String upper_first = first_temp.toUpperCase();    
         try {
             String statement
@@ -182,6 +191,7 @@ public class Patient {
             ResultSet rs = pst.executeQuery();
             Patient one = new Patient();
             while (rs.next()) {
+                one.setId(rs.getString("ID"));
                 one.setFirstName(rs.getString("FIRST_NAME"));
                 one.setLastName(rs.getString("LAST_NAME"));
                 one.setMiddleName(rs.getString("MIDDLE_NAME"));
@@ -194,8 +204,6 @@ public class Patient {
     }
     
     public ResultSet getLocation(Patient p) {
-        String upper_first = p.getFirstName().toUpperCase(); 
-        String upper_last = p.getLastName().toUpperCase();
         
         try {
             String statement
@@ -203,15 +211,16 @@ public class Patient {
                     + "loc.facility, "
                     + "loc.floor, "
                     + "loc.room_number, "
-                    + "loc.bed_number "
-                    
+                    + "loc.bed_number, "
+                    + "loc.visitor_count, "
+                    + "loc.visitors "
                     + "FROM "
                     + "PATIENTDB.PATIENT p, "
                     + "PATIENTDB.LOCATION loc "
                     + "WHERE "
-                    + "UPPER(p.LAST_NAME) like UPPER('"+upper_last+"') "
-                    + "and UPPER(p.FIRST_NAME) like UPPER('"+upper_first+"') "
+                    + "p.id = "+p.getId()+" "
                     + "and p.id = loc.id";
+            
             System.out.println(statement);
             PreparedStatement pst = conn.prepareStatement(statement);
             ResultSet rs = pst.executeQuery();

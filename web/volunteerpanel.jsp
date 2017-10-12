@@ -60,7 +60,7 @@
             <div class="w3-bar-block">
                 <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Overview</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Views</a>
+                <a href="report.jsp" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Reports</a>
                 <a href="ControllerServlet?page=adminpanel.jsp&dashboard=user" class="w3-bar-item w3-button w3-padding" ><i class="fa fa-users fa-fw" ></i>  Users</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Geo</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Orders</a>
@@ -124,25 +124,20 @@
         
         <input type="hidden" name="selected" value="none">
         <!-- !PAGE CONTENT! -->
-        <div class="w3-main" style="margin-left:300px;margin-top:43px;">
-        
+        <div class="w3-main" style="margin-left:300px;margin-top:43px;">        
             
             <table class="w3-table w3-bordered w3-border w3-black">
                 <tr>
                     <td>Patients</td>
-
                 </tr>   
-            </table>    
-              
+            </table>                  
           
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
             <input type="hidden" name="v_display_name" id="temp" value="${v_display_name}" /><%-- This one works --%>
             <table class="w3-table-all w3-striped w3-bordered w3-border w3-hoverable w3-white">
                 <c:forEach items="${vol_info}" var="pa">
-                    <tr >
-                        
+                    <tr >                        
                         <td class="myrow" id="${pa.displayName}"><c:out value="${pa.displayName}"/></td>
-
                     </tr>
                 </c:forEach>
             </table>

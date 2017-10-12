@@ -45,7 +45,7 @@
                     <img src="/w3images/avatar2.png" class="w3-circle w3-margin-right" style="width:46px">
                 </div>
                 <div class="w3-col s8 w3-bar">
-                    <span>Welcome, <strong> ${user}</strong></span><br>
+                    <span>Volunteer</strong></span><br>
                     <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
                     <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
                     <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
@@ -82,10 +82,10 @@
                         <input class="w3-input w3-border w3-round-large" type="text" value="${v_last_name}">
 
                         <label class="w3-text-blue"><b>Number of Visitors</b></label>
-                        <input class="w3-input w3-border w3-round-large" type="text">
+                        <input class="w3-input w3-border w3-round-large" type="text" value="${v_count}">
 
                         <label class="w3-text-blue"><b>List of Approved Visitors</b></label>
-                        <input class="w3-input w3-border w3-round-large" type="text">
+                        <input class="w3-input w3-border w3-round-large" type="text" value="${v_list}">
                         <br>
                     </div>
                     <div class="w3-col s1 w3-center">&zwnj;</div>
