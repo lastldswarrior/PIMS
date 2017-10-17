@@ -160,6 +160,9 @@
                     </div>
                     <div class="w3-third">
                         <input class="w3-button w3-blue" type="submit" value="Run Report" >
+                        
+                        <input type="hidden" id="download" name="download" value='' />
+                        <input class="w3-button w3-red" type="submit" value="Download Table" onclick="ckDownload()" />
                     </div>
                 </div>
                 
@@ -179,3 +182,13 @@
         </form>
 </body>
 </html>
+
+
+<script type="text/javascript" >
+    
+    function ckDownload(){
+        document.getElementById("download").value = true;
+        document.getElementById('reportThis').submit();
+    }
+    
+</script>

@@ -6,11 +6,15 @@
 package pims;
 
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.AcroFields;
@@ -37,7 +41,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
 
@@ -48,6 +54,8 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(name="ReportServlet", urlPatterns="/ReportServlet")
 public class ReportServlet extends HttpServlet implements javax.servlet.Servlet {
 
+    private static Font TIME_ROMAN = new Font(Font.FontFamily.TIMES_ROMAN, 18,Font.BOLD);
+    private static Font TIME_ROMAN_SMALL = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -102,11 +110,41 @@ public class ReportServlet extends HttpServlet implements javax.servlet.Servlet 
             if (!input.isEmpty()) {
                 List<Rows> rows = buildQuery(tableName, colName, conditionName, input);
                 request.setAttribute("rows", rows);
+                
+                boolean download = Boolean.parseBoolean(request.getParameter("download"));
+                if(download){
+                    String query = "All Patients where "+tableName+"."+colName+" "+conditionName+" "+input;
+                    export(request, response, rows, tableName,query);
+                }
+                
             }
         }
         
         request.getRequestDispatcher("report.jsp").forward(request, response);
         
+    }
+    
+    private void export(HttpServletRequest request, HttpServletResponse response, List<Rows> rows, String input, String query) {        
+        
+        try {
+            response.setContentType("application/pdf");
+            response.setHeader("content-disposition", "attachment; filename=" + "patientDischargeReport.pdf");
+            
+            Document doc = new Document();
+            PdfWriter.getInstance(doc, response.getOutputStream());
+            doc.open();
+            
+            //Write to the pdf
+            //addImage(doc);
+            addTitlePage(doc, query);            
+            doc.add(createDataTable(rows, input));
+            doc.close();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private List<Rows> buildQuery(String table, String col, String cond, String input){
@@ -161,7 +199,7 @@ public class ReportServlet extends HttpServlet implements javax.servlet.Servlet 
                 result = input + "%";
                 return result;
             case "LIKE":
-                result = input.replaceAll("[\\*]", "%");
+                result = input.replaceAll("[//*]", "%");
                 return result;
             case "=":
                 return input;
@@ -220,7 +258,76 @@ public class ReportServlet extends HttpServlet implements javax.servlet.Servlet 
         }
     }
     
-   
+    private void addTitlePage(Document document, String query) throws DocumentException {
+
+        try {
+            Paragraph preface = new Paragraph();
+            creteEmptyLine(preface, 1);            
+            Image img = Image.getInstance("C:/Users/Jared/Documents/NetBeansProjects/PIMS/web/arkham2.png");
+            preface.add(img);
+            
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            preface.add(new Paragraph("Report created on "
+                    + simpleDateFormat.format(new Date()), TIME_ROMAN_SMALL));
+            
+            preface.add(new Paragraph("Script Executed: "+query, TIME_ROMAN_SMALL));
+            creteEmptyLine(preface, 1);
+            document.add(preface);
+        } catch (BadElementException ex) {
+            Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private void creteEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+    }
+    
+     private void addImage(Document document){
+        try { 
+            Image img = Image.getInstance("C:/Users/Jared/Documents/NetBeansProjects/PIMS/web/arkham.png");
+            document.add(img);
+            
+        } catch (BadElementException ex) {
+            Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+     }
+    public PdfPTable createDataTable(List<Rows> rows, String input) {
+    	// a table with 2 columns
+        PdfPTable table = new PdfPTable(2);
+        // the cell object
+        PdfPCell cell;
+        // we add a cell
+        cell = new PdfPCell(new Phrase("Patients"));
+        table.addCell(cell);
+        cell = new PdfPCell(new Phrase(input));
+        table.addCell(cell);
+//        
+//        // now we add a cell with rowspan 2
+//        cell = new PdfPCell(new Phrase("Cell with rowspan 2"));
+//        cell.setRowspan(2);
+//        table.addCell(cell);
+        
+        // we add the four remaining cells with addCell()
+        for(Rows r:rows){
+            table.addCell(r.getIndex(0));
+            table.addCell(r.getIndex(1));
+        }
+        
+        
+        return table;
+    } 
+
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
