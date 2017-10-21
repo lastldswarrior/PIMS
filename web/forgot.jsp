@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index
-    Created on : Sep 6, 2017, 7:07:51 AM
+    Document   : forgot
+    Created on : Oct 18, 2017, 6:43:33 PM
     Author     : Jared
 --%>
 
@@ -8,22 +8,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Login Application</title>
+        <title>Forgot Password</title>
         <style>
             body, html {
                 height: 100%;
                 margin: 0;
+                background-color: black;
             }
 
             .bg {
-
-                background-image: url("loginScreen.jpg");
-
+                background-image: url("forgot2.jpg");                
                 height: 100%; 
-
                 background-position: center;
                 background-repeat: no-repeat;
-                background-size: cover;
+                background-size: 100% 100%;
             }
         </style>
         <meta charset="UTF-8">
@@ -35,45 +33,38 @@
             html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         </style>
     </head>
-
     <body>
         <div class="bg">
             <form action="ControllerServlet" method="post">
-                <div class="w3-display-middle w3-opacity-min w3-black w3-round-large" style="height:250px;width:400px">
+                <div class="w3-display-middle w3-opacity w3-white w3-round-large" style="height:250px;width:400px">
                     <table>
                         <tr>
                             <div class="w3-container w3-center">
-                                <h2>Welcome to PIMS</h2>
+                                <h2>Forgot Your Password?</h2>
+                                <p>Enter your email address and we will send you your password on a postcard via USPS</p>
                             </div>
                         </tr>
                         <tr>
                         <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                               name="username" type="text" placeholder="&#xf007; User ID" value="${newUser}">
-                        </tr>
-                        <br>
-                        <tr>
-                        <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
-                               name="userpass" type="password" placeholder="&#xf023; Password">
+                               name="f_email" type="text" placeholder="&#xf0e0; Your Email" value="${newUser}">
                         </tr>
                         <br>
                         <tr>
                         <div class="w3-cell-row">
-                            <div class="w3-container w3-cell" style="width:50%">
-                                <a href="register.jsp" >Register</a>
+                            <div class="w3-container w3-cell">
+                                <a href="index.jsp" ><< Back to Login</a>
                             </div>
-                            <div class="w3-container w3-cell" >
-                                <a href="forgot.jsp" >Forgot Password?</a>
-                            </div>    
+                            
                         </div>    
                         </tr>
                         <br>
                         <tr>
-                        <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black w3-hover-blue" 
-                                style="font-family:Arial, FontAwesome"type="submit">Log In                   
+                        <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black w3-hover-white" 
+                                style="font-family:Arial, FontAwesome" type="submit">Send My Password                 
                         </button>
                         </tr>
                     </table>   
-                    <input type="hidden" name="page" value='index.jsp' /><%-- This one works --%>
+                    <input type="hidden" name="page" value='forgot.jsp' /><%-- This one works --%>
                 </div>
             </form>
         </div>

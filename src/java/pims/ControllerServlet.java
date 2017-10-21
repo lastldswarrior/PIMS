@@ -26,6 +26,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name="ControllerServlet", urlPatterns="/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
+    
+    private DBConnect db;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,11 +47,40 @@ public class ControllerServlet extends HttpServlet {
         System.out.println("Top: "+currentUser);
         //from any jsp page, handle routing
         switch (pageName) {
+            case "forgot.jsp":                
+                String forgotEmail = request.getParameter("f_email");
+                db = new DBConnect();
+                db.connect();                 
+                
+                Email email = new Email(db.getConn(),forgotEmail);
+                email.send();
+                
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+                break;
+            case "register.jsp":
+                String registerUsername = request.getParameter("rname");
+                String registerEmail = request.getParameter("email");
+                String registerPassword = request.getParameter("userpass");
+                String registerPassword2 = request.getParameter("userpass2");
+                String registerLevel = request.getParameter("level");
+                
+                db = new DBConnect();
+                db.connect();                
+                
+                if(registerPassword.equals(registerPassword2)){
+                    User myUser = new User(db.getConn());                    
+                    myUser.addUser(registerUsername, registerPassword, registerLevel, registerEmail);                    
+                    request.setAttribute("newUser", registerUsername);
+                }
+                
+                
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+                break;                
             case "index.jsp":
                 String username = request.getParameter("username");
                 String pass = request.getParameter("userpass");   
                 
-                DBConnect db = new DBConnect();
+                db = new DBConnect();
                 db.connect();
 
                 User user = new User(db.getConn());
@@ -132,7 +163,7 @@ public class ControllerServlet extends HttpServlet {
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                     }
                 }else if (!new_name.isEmpty()) {
-                    boolean changed = modifyUser.addUser(new_name, new_pass,new_access);
+                    boolean changed = modifyUser.addUser(new_name, new_pass,new_access,"myEmail@uah.edu");
                     
                     if (changed) {
                         request.setAttribute("announcement", "User Added");

@@ -172,10 +172,10 @@ public class User {
         }
     }
 
-    public boolean addUser(String user, String pass, String level){
+    public boolean addUser(String user, String pass, String level, String email){
         try {
-            String add = "INSERT INTO PATIENTDB.USERS (USER_NAME, USER_PASSWORD, LEVEL) "
-                    + "VALUES ('"+user+"','"+pass+"','"+level+"')";
+            String add = "INSERT INTO PATIENTDB.USERS (USER_NAME, USER_PASSWORD, LEVEL, EMAIL) "
+                    + "VALUES ('"+user+"','"+pass+"','"+level+"','"+email+"')";
                    
                         
             PreparedStatement ps = conn.prepareStatement(add);

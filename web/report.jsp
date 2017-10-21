@@ -78,7 +78,7 @@
                 <table class="w3-table">
                     <tr>
                         <td>
-                            <img src="arkham.png" style="width:100%"/>                           
+                            <img src="ark2.jpg" style="width:75%"/>                           
                         </td>
                         <td>
                             <table class="w3-table">
