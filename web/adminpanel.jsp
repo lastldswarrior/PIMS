@@ -4,12 +4,12 @@
     Author     : Jared
 <%@page import="pims.User"%>
 --%>
-
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <title>Admin Panel</title>
+    <title>AdminPanel</title>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -20,7 +20,7 @@
     </style>
     <body class="w3-light-grey">
         <%-- Java Bean: User --%>
-          
+        <input type="hidden" name="page" value='adminpanel.jsp' /></td><%-- This one works --%>  
         <!-- Top container -->
         <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
             <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
@@ -44,11 +44,12 @@
             <div class="w3-container">
                 <h5>Dashboard</h5>
             </div>
+            <form name="Admin" action="ControllerServlet" method="post">
             <div class="w3-bar-block">
                 <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Overview</a>
+                <a href="index.jsp" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Overview</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Views</a>
-                <a href="ControllerServlet?page=adminpanel.jsp&dashboard=user" class="w3-bar-item w3-button w3-padding" ><i class="fa fa-users fa-fw" ></i>  Users</a>
+                <a href="admin.jsp" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw" ></i>  Users</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Geo</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Orders</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>
@@ -56,6 +57,7 @@
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a><br><br>
             </div>
+            </form>
         </nav>
         
         <!-- Overlay effect when opening sidebar on small screens -->
@@ -66,52 +68,78 @@
 
             <!-- Header -->
             <header class="w3-container" style="padding-top:22px">
-                <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+                <h5><b><i class="fa fa-users fa-fw"></i> Users</b></h5>
             </header>
 
             <div class="w3-row-padding w3-margin-bottom">
                 <div class="w3-quarter">
                     <div class="w3-container w3-red w3-padding-16">
-                        <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
+                        <div class="w3-left"><i class="fa fa-user-md w3-xxxlarge"></i></div>
                         <div class="w3-right">
-                            <h3>52</h3>
+                            <h3>${doctorCount}</h3>
                         </div>
                         <div class="w3-clear"></div>
-                        <h4>Messages</h4>
+                        <h4>Doctors</h4>
                     </div>
                 </div>
                 <div class="w3-quarter">
                     <div class="w3-container w3-blue w3-padding-16">
-                        <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
+                        <div class="w3-left"><i class="fa fa-stethoscope w3-xxxlarge"></i></div>
                         <div class="w3-right">
                             <h3>99</h3>
                         </div>
                         <div class="w3-clear"></div>
-                        <h4>Views</h4>
+                        <h4>Nurses</h4>
                     </div>
                 </div>
                 <div class="w3-quarter">
                     <div class="w3-container w3-teal w3-padding-16">
-                        <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
+                        <div class="w3-left"><i class="fa fa-hospital-o w3-xxxlarge"></i></div>
                         <div class="w3-right">
                             <h3>23</h3>
                         </div>
                         <div class="w3-clear"></div>
-                        <h4>Shares</h4>
+                        <h4>Office</h4>
                     </div>
                 </div>
                 <div class="w3-quarter">
                     <div class="w3-container w3-orange w3-text-white w3-padding-16">
                         <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
                         <div class="w3-right">
-                            <h3>${userCount}</h3>
+                            <h3>200</h3>
                         </div>
                         <div class="w3-clear"></div>
-                        <h4>Users</h4>
+                        <h4>Volunteers</h4>
                     </div>
                 </div>
             </div>
-
+            <div class="w3-container">                
+                <a href="admin.jsp" class="w3-btn w3-blue w3-round-xlarge">Add New User</a>
+                <a href="admin.jsp" class="w3-btn w3-blue w3-round-xlarge">Change User Password</a>
+                <a href="admin.jsp" class="w3-btn w3-blue w3-round-xlarge">Change User Access</a>
+                
+            </div>
+            <br>
+            <div class="w3-container">
+                <table class="w3-table w3-striped w3-bordered w3-border w3-black w3-white">
+                    <tr>
+                        <td>Account Names</td>
+                        <td>Level of Access</td>
+                    </tr>   
+                </table>                  
+                
+                <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                    <c:forEach items="${users}" var="user">
+                        <tr>
+                            <td><c:out value="${user.userName}" /></td>
+                            <td><c:out value="${user.level}" /></td>
+                        </tr>
+                    </c:forEach>
+                </table><br>
+                <button class="w3-button w3-dark-grey">More Countries  <i class="fa fa-arrow-right"></i></button>
+            </div>
+                        
+                        
             <div class="w3-panel">
                 <div class="w3-row-padding" style="margin:0 -16px">
                     <div class="w3-third">
@@ -180,36 +208,7 @@
             </div>
             <hr>
 
-            <div class="w3-container">
-                <h5>Countries</h5>
-                <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-                    <tr>
-                        <td>United States</td>
-                        <td>65%</td>
-                    </tr>
-                    <tr>
-                        <td>UK</td>
-                        <td>15.7%</td>
-                    </tr>
-                    <tr>
-                        <td>Russia</td>
-                        <td>5.6%</td>
-                    </tr>
-                    <tr>
-                        <td>Spain</td>
-                        <td>2.1%</td>
-                    </tr>
-                    <tr>
-                        <td>India</td>
-                        <td>1.9%</td>
-                    </tr>
-                    <tr>
-                        <td>France</td>
-                        <td>1.5%</td>
-                    </tr>
-                </table><br>
-                <button class="w3-button w3-dark-grey">More Countries  <i class="fa fa-arrow-right"></i></button>
-            </div>
+            
             <hr>
             <div class="w3-container">
                 <h5>Recent Users</h5>

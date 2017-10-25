@@ -14,13 +14,9 @@
                 height: 100%;
                 margin: 0;
             }
-
             .bg {
-
                 background-image: url("loginScreen.jpg");
-
                 height: 100%; 
-
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
@@ -37,6 +33,12 @@
     </head>
 
     <body>
+        <!-- Navbar (sit on top) -->
+        <div class="w3-top">
+            <div class="w3-bar w3-white w3-card-2" id="myNavbar">
+                <div class="w3-bar-item w3-wide"><i class="fa fa-h-square"></i> PIMS</div>                
+            </div>
+        </div>
         <div class="bg">
             <form action="ControllerServlet" method="post">
                 <div class="w3-display-middle w3-opacity-min w3-black w3-round-large" style="height:250px;width:400px">

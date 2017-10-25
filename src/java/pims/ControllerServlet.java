@@ -89,47 +89,29 @@ public class ControllerServlet extends HttpServlet {
                 String levelOfAccess = user.validate();
                 user.countUsers();
                 
-                //from index go to which page
+                //from index go to which page---admin page is broken TODO:
                 switch (levelOfAccess) {
                     case "Admin":                        
                         request.setAttribute("user", user.getUserName());
                         request.setAttribute("userCount", user.getUserCount());
                         request.getRequestDispatcher("adminpanel.jsp").forward(request, response);
                         break;
-                    case "Volunteer":
-//                        List<User> patients = new ArrayList();
-//                        db = new DBConnect();
-//                        db.connect();
-
-                        //Used to get all users, but don't need here
-//                        User appUsers = new User(db.getConn());
-//                        ResultSet allUsers = appUsers.getAllUsers();
-//                        while (allUsers.next()) {
-//                            User one = new User();
-//                            one.setUserName(allUsers.getString("USER_NAME"));
-//
-//                            patients.add(one);
-//                        }
-
-//                        request.setAttribute("patients", patients);
-
-                        //Patients
-//                        List<Patient> patientList = new ArrayList();
-//                        Patient patient = new Patient(db.getConn());
-//                        ResultSet allPatients = patient.getAllPatients();
-//
-//                        while (allPatients.next()) {
-//                            Patient p = new Patient();
-//                            String first = allPatients.getString("FIRST_NAME");
-//                            String last = allPatients.getString("LAST_NAME");
-//                            p.setDisplayName(first + " " + last);                           
-//                            patientList.add(p);
-//                        }
-                        
-                        request.setAttribute("user", currentUser);
+                    case "Volunteer":                         
+                        //request.setAttribute("user", currentUser);
                         request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                         break;
-                        
+                    case "Office":                         
+                        request.setAttribute("user", currentUser);
+                        request.getRequestDispatcher("officepanel.jsp").forward(request, response);
+                        break;
+                    case "Nurse":                         
+                        request.setAttribute("user", currentUser);
+                        request.getRequestDispatcher("nursepanel.jsp").forward(request, response);
+                        break; 
+                    case "Doctor":                         
+                        request.setAttribute("user", currentUser);
+                        request.getRequestDispatcher("doctorpanel.jsp").forward(request, response);
+                        break;    
                     default:
                         request.setAttribute("pass", levelOfAccess);
                         request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -285,10 +267,6 @@ public class ControllerServlet extends HttpServlet {
                     
                     request.getRequestDispatcher("volunteerResult.jsp").forward(request, response);
                 }
-                
-                
-                
-                
                 break;
             default:
                 request.setAttribute("pass", "Default Switch");
