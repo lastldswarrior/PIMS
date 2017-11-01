@@ -106,8 +106,7 @@ public class ControllerServlet extends HttpServlet {
                         //request.setAttribute("user", currentUser);
                         request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                         break;
-                    case "Office": 
-                        
+                    case "Office":                         
                         request.getRequestDispatcher("officepanel.jsp").forward(request, response);                        
                         break;
                     case "Nurse":                         
@@ -259,6 +258,10 @@ public class ControllerServlet extends HttpServlet {
                 workOffice(request);
                 request.getRequestDispatcher("officepanel.jsp").forward(request, response);
                 break;
+            case "doctorpanel.jsp":
+                workDoctor(request);
+                request.getRequestDispatcher("doctorpanel.jsp").forward(request, response);
+                break;    
             default:
                 request.setAttribute("pass", "Default Switch");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -314,6 +317,210 @@ public class ControllerServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private boolean workDoctor(HttpServletRequest request) throws Exception{
+        
+        String v_found3 = request.getParameter("v_display_name");
+        String off_display2 = request.getParameter("v_display_name");
+        String v_first3 = request.getParameter("v_first_name");
+        String v_last3 = request.getParameter("v_last_name");
+
+        db = new DBConnect();
+        db.connect();
+
+        String n_AdmissionReason = request.getParameter("new_AdmissionReason");
+        String n_DoctorsTreatmentNotes = request.getParameter("new_DoctorsTreatmentNotes");
+        String n_PerscriptionName = request.getParameter("new_PerscriptionName");
+        String n_PerscriptionSchedule = request.getParameter("new_PerscriptionSchedule");
+        String n_PerscriptionAmount = request.getParameter("new_PerscriptionAmount");
+        String n_ScheduledProcedure = request.getParameter("new_Scheduled_Procedures");
+
+        if (!n_ScheduledProcedure.isEmpty()) {
+            Patient myPatient = new Patient(db.getConn());
+            String[] array = off_display2.split(" ");
+            Patient dbPatient = myPatient.getPatient(array[0], array[1]);
+            boolean changeScheduledProcedure = myPatient.changeScheduledProcedure(dbPatient.getId(), n_ScheduledProcedure);
+        }
+        if (!n_AdmissionReason.isEmpty()) {
+            Patient myPatient = new Patient(db.getConn());
+            String[] array = off_display2.split(" ");
+            Patient dbPatient = myPatient.getPatient(array[0], array[1]);
+            boolean changeAdmissionReason = myPatient.changeAdmissionReason(dbPatient.getId(), n_AdmissionReason);
+        }
+        if (!n_DoctorsTreatmentNotes.isEmpty()) {
+            Patient myPatient = new Patient(db.getConn());
+            String[] array = off_display2.split(" ");
+            Patient dbPatient = myPatient.getPatient(array[0], array[1]);
+            boolean changeDoctorsTreatmentNotes = myPatient.changeDoctorsTreatmentNotes(dbPatient.getId(), n_DoctorsTreatmentNotes);
+        }
+        if (!n_PerscriptionName.isEmpty()) {
+            Patient myPatient = new Patient(db.getConn());
+            String[] array = off_display2.split(" ");
+            Patient dbPatient = myPatient.getPatient(array[0], array[1]);
+            boolean changePerscriptionName = myPatient.changePerscriptionName(dbPatient.getId(), n_PerscriptionName);
+        }
+        if (!n_PerscriptionSchedule.isEmpty()) {
+            Patient myPatient = new Patient(db.getConn());
+            String[] array = off_display2.split(" ");
+            Patient dbPatient = myPatient.getPatient(array[0], array[1]);
+            boolean changePerscriptionSchedule = myPatient.changePerscriptionSchedule(dbPatient.getId(), n_PerscriptionSchedule);
+        }
+        if (!n_PerscriptionAmount.isEmpty()) {
+            Patient myPatient = new Patient(db.getConn());
+            String[] array = off_display2.split(" ");
+            Patient dbPatient = myPatient.getPatient(array[0], array[1]);
+            boolean changePerscriptionAmount = myPatient.changePerscriptionAmount(dbPatient.getId(), n_PerscriptionAmount);
+        }
+        
+        List<Patient> patients3 = new ArrayList();
+        Patient patient4 = new Patient(db.getConn());
+        ResultSet allPatients3 = null;
+        if (v_found3.isEmpty()) {
+            if (!v_first3.isEmpty()) {
+                allPatients3 = patient4.getVolunteerFirst(v_first3);
+            }
+            if (!v_last3.isEmpty()) {
+                allPatients3 = patient4.getVolunteerLast(v_last3);
+            }
+            while (allPatients3.next()) {
+                Patient p = new Patient();
+                String first = allPatients3.getString("FIRST_NAME");
+                String last = allPatients3.getString("LAST_NAME");
+                String street = allPatients3.getString("STREET");
+                String id = allPatients3.getString("ID");
+                p.setDisplayName(first + " " + last);
+                p.setStreet(street);
+                
+                patients3.add(p);
+            }
+        } else {
+
+            patient4 = new Patient(db.getConn());
+            String[] s_array = off_display2.split(" ");
+
+            Patient dbPatient2 = patient4.getPatient(s_array[0], s_array[1]);
+            ResultSet location = patient4.getLocation(dbPatient2);
+            ResultSet contact = patient4.getContact(dbPatient2);
+            ResultSet treatment = patient4.getTreatment(dbPatient2);
+            ResultSet Insurance = patient4.getInsurance(dbPatient2);
+            ResultSet Prescriptions = patient4.getPrescriptions(dbPatient2);
+
+            String AdmittanceDate = "";
+            String AdmittanceTime = "";
+            String DischargeDate = "";
+            String DischargeTime = "";
+
+            String FamilyDoctor = "";
+            String homePhone = "";
+            String workPhone = "";
+            String cellPhone = "";
+            String EmergencyName1 = "";
+            String EmergencyNumber1 = "";
+            String EmergencyName2 = "";
+            String EmergencyNumber2 = "";
+            String Facility = "";
+            String Floor = "";
+            String room = "";
+            String BedNumber = "";
+            String city = "";
+            String floorNumber = "";
+
+            String Carrier = "";
+            String Policy_Account_Number = "";
+            String Policy_Group_Number = "";
+            String Amount_Paid_By_Insurance = "";
+            String Prescription_Name = "";
+            String Prescription_Schedule = "";
+            String Prescription_Amount = "";
+            String Reason_For_Admission = "";
+            String Doctors_Treatment_Notes = "";
+            String Nurses_Treatment_Notes = "";
+            String Scheduled_Procedure = "";
+
+            String street = dbPatient2.getStreet();
+            String zip = dbPatient2.getZip();
+            String state = dbPatient2.getState();
+            city = dbPatient2.getCity();
+
+            while (Prescriptions.next()) {
+                Prescription_Name = Prescriptions.getString("NAME");
+                Prescription_Schedule = Prescriptions.getString("SCHEDULE");
+                Prescription_Amount = Prescriptions.getString("AMOUNT");
+            }
+
+            while (treatment.next()) {
+                AdmittanceDate = treatment.getString("ADMITTANCE_DATE");
+                AdmittanceTime = treatment.getString("ADMITTANCE_TIME");
+                FamilyDoctor = treatment.getString("FAMILY_DOCTOR");
+                Reason_For_Admission = treatment.getString("ADMITTANCE_REASON");
+                Doctors_Treatment_Notes = treatment.getString("DOCTORS_TREATMENT_NOTES");
+                Nurses_Treatment_Notes = treatment.getString("NURSES_TREATMENT_NOTES");
+                Scheduled_Procedure = treatment.getString("SCHEDULED_PROCEDURE");
+            }
+            while (Insurance.next()) {
+                Carrier = Insurance.getString("CARRIER");
+                Policy_Account_Number = Insurance.getString("POLICY_ACCOUNT_NUMBER");
+                Policy_Group_Number = Insurance.getString("POLICY_GROUP_NUMBER");
+                Amount_Paid_By_Insurance = Insurance.getString("AMOUNT_PAID_BY_INSURANCE");
+            }
+
+            while (location.next()) {
+                Facility = location.getString("FACILITY");
+                Floor = location.getString("FLOOR");
+                room = location.getString("ROOM_NUMBER");
+                floorNumber = location.getString("FLOOR");
+                BedNumber = location.getString("BED_NUMBER");
+                DischargeDate = location.getString("DISCHARGED_DATE");
+                DischargeTime = location.getString("DISCHARGED_TIME");
+            }
+            while (contact.next()) {
+                homePhone = contact.getString("HOME_PHONE");
+                workPhone = contact.getString("WORK_PHONE");
+                cellPhone = contact.getString("CELL_PHONE");
+                EmergencyName1 = contact.getString("EMERGENCY_CONTACT_NAME_01");
+                EmergencyNumber1 = contact.getString("EMERGENCY_CONTACT_NUMBER_01");
+                EmergencyName2 = contact.getString("EMERGENCY_CONTACT_NAME_02");
+                EmergencyNumber2 = contact.getString("EMERGENCY_CONTACT_NUMBER_02");
+            }
+
+            request.setAttribute("v_display_name", v_found3);
+            request.setAttribute("v_display_city", city);
+            request.setAttribute("v_display_room", room);
+            request.setAttribute("v_display_Street", street);
+            request.setAttribute("v_display_Zip", zip);
+            request.setAttribute("v_display_State", state);
+            request.setAttribute("v_display_HomePhone", homePhone);
+            request.setAttribute("v_display_WorkPhone", workPhone);
+            request.setAttribute("v_display_CellPhone", cellPhone);
+            request.setAttribute("v_display_EmergContName1", EmergencyName1);
+            request.setAttribute("v_display_EmergContNum1", EmergencyNumber1);
+            request.setAttribute("v_display_EmergContName2", EmergencyName2);
+            request.setAttribute("v_display_EmergContNum2", EmergencyNumber2);
+            request.setAttribute("v_display_AdmittanceDate", AdmittanceDate);
+            request.setAttribute("v_display_AdmittanceTime", AdmittanceTime);
+            request.setAttribute("v_display_FamilyDoctor", FamilyDoctor);
+            request.setAttribute("v_display_Facility", Facility);
+            request.setAttribute("v_display_Floor", Floor);
+            request.setAttribute("v_display_BedNumber", BedNumber);
+            request.setAttribute("v_display_DischargeDate", DischargeDate);
+            request.setAttribute("v_display_DischargeTime", DischargeTime);
+            request.setAttribute("v_display_InsuranceCarrier", Carrier);
+            request.setAttribute("v_display_PolicyAccountNumber", Policy_Account_Number);
+            request.setAttribute("v_display_PolicyGroupNumber", Policy_Group_Number);
+            request.setAttribute("v_display_AmountPaidByInsurance", Amount_Paid_By_Insurance);
+            request.setAttribute("v_display_PerscriptionName", Prescription_Name);
+            request.setAttribute("v_display_PerscriptionSchedule", Prescription_Schedule);
+            request.setAttribute("v_display_PerscriptionAmount", Prescription_Amount);
+            request.setAttribute("v_display_AdmissionReason", Reason_For_Admission);
+            request.setAttribute("v_display_DoctorsTreatmentNotes", Doctors_Treatment_Notes);
+            request.setAttribute("v_display_NursesTreatmentNotes", Nurses_Treatment_Notes);
+            request.setAttribute("v_display_Scheduled_Procedure", Scheduled_Procedure);                     
+
+        }
+        request.setAttribute("vol_info", patients3);
+        
+        
+        return true;
+    }
     
     private boolean workOffice(HttpServletRequest request) throws Exception {
         
