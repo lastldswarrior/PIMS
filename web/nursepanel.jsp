@@ -79,7 +79,7 @@
         <div class="bg" id='maincontainer'>
             <a href="adminpanel.jsp" class="w3-btn w3-blue w3-round-xlarge">Return to Dashboard</a>
            <form name="Volunteer" id="vPage" action="" method="post"> 
-                <input type="hidden" name="page" value='Medical Professional.jsp' /><%-- This one works --%>
+                <input type="hidden" name="page" value='nursepanel.jsp' /><%-- This one works --%>
                 <br><br>
                 <div class="w3-row-padding">
                     <div class="w3-col s1 w3-center" style="width:100px">&zwnj;</div>
