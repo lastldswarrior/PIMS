@@ -21,10 +21,21 @@
     <body class="w3-light-grey">
         <%-- Java Bean: User --%>
         <input type="hidden" name="page" value='adminpanel.jsp' /></td><%-- This one works --%>  
-        <!-- Top container -->
-        <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
-            <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
-            <span class="w3-bar-item w3-right">Logo</span>
+        <!-- Navbar (sit on top) -->
+        <div class="w3-top">
+            <div class="w3-bar w3-black w3-card-2" id="myNavbar">
+                <div class="w3-bar-item w3-wide"><i class="fa fa-h-square"></i> PIMS</div>
+                <!-- Right-sided navbar links -->
+                <div class="w3-right w3-hide-small">     
+                    <div class="w3-bar-item"><i class="fa fa-user"></i> ${user}</div>
+                    <a href="index.jsp" class="w3-bar-item w3-button"><i class="fa fa-arrow-left"></i> BACK TO LOGIN</a>                    
+                </div>
+                <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
         </div>
 
         <!-- Sidebar/menu -->
@@ -76,7 +87,7 @@
                     <div class="w3-container w3-red w3-padding-16">
                         <div class="w3-left"><i class="fa fa-user-md w3-xxxlarge"></i></div>
                         <div class="w3-right">
-                            <h3>${doctorCount}</h3>
+                            <h3>90</h3>
                         </div>
                         <div class="w3-clear"></div>
                         <h4>Doctors</h4>
