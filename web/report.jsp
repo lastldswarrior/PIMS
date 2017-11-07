@@ -38,41 +38,28 @@
     </head>
     
     <body>
-        <!-- Sidebar/menu -->
-        <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br />
-            <div class="w3-container w3-row">
-                <div class="w3-col s4">
-                    <img src="/w3images/avatar2.png" class="w3-circle w3-margin-right" style="width:46px" />
+        <!-- Navbar (sit on top) -->
+        <div class="w3-top">
+            <div class="w3-bar w3-white w3-card-2" id="myNavbar">
+                <div class="w3-bar-item w3-wide"><i class="fa fa-h-square"></i> PIMS</div>
+                <a href="ReportServlet" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i> Reset</a>
+                <!-- Right-sided navbar links -->
+                <div class="w3-right w3-hide-small">
+                    <a href="officepanel.jsp" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i> OFFICE</a>  
+                    <a href="index.jsp" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i> SIGN OUT</a>                    
                 </div>
-                
-                <div class="w3-col s8 w3-bar">
-                    <span><strong>Report - Click Mail</strong></span><br />
-                    <a href="ReportServlet" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
-                </div>
+                <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+                    <i class="fa fa-bars"></i>
+                </a>
             </div>
-            <hr />
-            <div class="w3-container">
-                <h5>Dashboard</h5>
-            </div>
-            <div class="w3-bar-block">
-                <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Overview</a>
-                <a href="report.jsp" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Reports</a>
-                <a href="ControllerServlet?page=adminpanel.jsp&dashboard=user" class="w3-bar-item w3-button w3-padding" ><i class="fa fa-users fa-fw" ></i>  Users</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Geo</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Orders</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  General</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a> <br /><br />
-            </div>
-        </nav>
+        </div>
+        
 
         <form name="reportThis" id="vPage" action="ReportServlet" method="post">
             <input type="hidden" name="page" value='report.jsp' />          
-
+            <br><br>
             <div class="w3-col s3" style="width:300px">&zwnj;</div>
             <div class="w3-col s9 w3-light-grey">
                 <table class="w3-table">
