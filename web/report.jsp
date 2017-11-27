@@ -42,10 +42,13 @@
         <div class="w3-top">
             <div class="w3-bar w3-white w3-card-2" id="myNavbar">
                 <div class="w3-bar-item w3-wide"><i class="fa fa-h-square"></i> PIMS</div>
-                <a href="ReportServlet" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i> Reset</a>
+                <a href="ReportServlet" class="w3-bar-item w3-button"><i class="fa fa-repeat"></i> Reset</a>
                 <!-- Right-sided navbar links -->
                 <div class="w3-right w3-hide-small">
-                    <a href="officepanel.jsp" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i> OFFICE</a>  
+                    <a href="officepanel.jsp" class="w3-bar-item w3-button"><i class="fa fa-desktop"></i> OFFICE</a>
+                    <a class="w3-bar-item w3-button" 
+                       onclick='javascript:window.open("help.pdf", "_doc", "scrollbars=1,resizable=1,height=500,width=750,centerscreen");'
+                       title='Pop Up'><i class="fa fa-info-circle"></i> HELP</a> 
                     <a href="index.jsp" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i> SIGN OUT</a>                    
                 </div>
                 <!-- Hide right-floated links on small screens and replace them with a menu icon -->
@@ -60,8 +63,8 @@
         <form name="reportThis" id="vPage" action="ReportServlet" method="post">
             <input type="hidden" name="page" value='report.jsp' />          
             <br><br>
-            <div class="w3-col s3" style="width:300px">&zwnj;</div>
-            <div class="w3-col s9 w3-light-grey">
+            <div class="w3-col s1">&zwnj;</div>
+            <div class="w3-col s10 w3-light-grey">
                 <table class="w3-table">
                     <tr>
                         <td>
@@ -146,10 +149,10 @@
                         <input class="w3-input w3-border" type="text" name="input" value="${inputValue}">
                     </div>
                     <div class="w3-third">
-                        <input class="w3-button w3-blue" type="submit" value="Run Report" >
+                        <input class="w3-button w3-blue" type="submit" style="font-family:Arial, FontAwesome" value="&#xf013; Run Report" >
                         
                         <input type="hidden" id="download" name="download" value='' />
-                        <input class="w3-button w3-red" type="submit" value="Download Table" onclick="ckDownload()" />
+                        <input class="w3-button w3-red" type="submit" style="font-family:Arial, FontAwesome" value="&#xf019; Download Table" onclick="ckDownload()" />
                     </div>
                 </div>
                 
@@ -166,6 +169,7 @@
                     </c:forEach>
                 </table>
             </div>
+            <div class="w3-col s1" >&zwnj;</div>
         </form>
 </body>
 </html>

@@ -128,14 +128,13 @@ public class ReportServlet extends HttpServlet implements javax.servlet.Servlet 
         
         try {
             response.setContentType("application/pdf");
-            response.setHeader("content-disposition", "attachment; filename=" + "patientDischargeReport.pdf");
+            response.setHeader("content-disposition", "attachment; filename=" + "downloadedReport.pdf");
             
             Document doc = new Document();
             PdfWriter.getInstance(doc, response.getOutputStream());
             doc.open();
             
-            //Write to the pdf
-            //addImage(doc);
+            //Write to the pdf            
             addTitlePage(doc, query);            
             doc.add(createDataTable(rows, input));
             doc.close();

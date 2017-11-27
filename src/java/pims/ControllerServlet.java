@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,8 +38,7 @@ public class ControllerServlet extends HttpServlet {
              
         String pageName = request.getParameter("page");
         System.out.println(pageName);
-        String currentUser = request.getParameter("username");
-        System.out.println("Top: "+currentUser);
+        
         //from any jsp page, handle routing
         switch (pageName) {
             case "forgot.jsp":                
@@ -102,19 +102,16 @@ public class ControllerServlet extends HttpServlet {
                         request.setAttribute("userCount", user.getUserCount());
                         request.getRequestDispatcher("adminpanel.jsp").forward(request, response);
                         break;
-                    case "Volunteer":                         
-                        //request.setAttribute("user", currentUser);
+                    case "Volunteer": 
                         request.getRequestDispatcher("volunteerpanel.jsp").forward(request, response);
                         break;
                     case "Office":                         
                         request.getRequestDispatcher("officepanel.jsp").forward(request, response);                        
                         break;
-                    case "Nurse":                         
-                        request.setAttribute("user", currentUser);
+                    case "Nurse": 
                         request.getRequestDispatcher("nursepanel.jsp").forward(request, response);
                         break; 
                     case "Doctor":                         
-                        request.setAttribute("user", currentUser);
                         request.getRequestDispatcher("doctorpanel.jsp").forward(request, response);
                         break;    
                     default:
@@ -123,76 +120,69 @@ public class ControllerServlet extends HttpServlet {
                         break;
                 }
                 break;
-            case "admin.jsp":
-                String a_user = request.getParameter("username");
-                String newPass = request.getParameter("a_pass");
-                //New user
-                String new_name = request.getParameter("newusername");
-                String new_pass = request.getParameter("newpass");
-                String new_access = request.getParameter("newaccess");
-                //Change access                 
-                String b_user = request.getParameter("access_username");
-                String access = request.getParameter("access"); 
-                
-                db = new DBConnect();
-                db.connect();
-                
-                User modifyUser = new User(db.getConn());                
-                if (!newPass.isEmpty()) {
-                    boolean changed = modifyUser.changePassword(a_user, newPass);
-
-                    if (changed) {
-                        request.setAttribute("announcement", "Updated Password");
-                        request.getRequestDispatcher("admin.jsp").forward(request, response);
-                    } else {
-                        request.setAttribute("pass", "failed to change password");
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
-                    }
-                }else if (!new_name.isEmpty()) {
-                    boolean changed = modifyUser.addUser(new_name, new_pass,new_access,"myEmail@uah.edu");
-                    
-                    if (changed) {
-                        request.setAttribute("announcement", "User Added");
-                        request.getRequestDispatcher("admin.jsp").forward(request, response);
-                    } else {
-                        request.setAttribute("pass", "failed to add user");
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
-                    }
-                }else if (!access.isEmpty()) {
-                    boolean changed = modifyUser.changeAccess(b_user, access);
-
-                    if (changed) {
-                        request.setAttribute("announcement", "Updated Access");
-                        request.getRequestDispatcher("admin.jsp").forward(request, response);
-                    } else {
-                        request.setAttribute("pass", "failed to update access");
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
-                    }
-                }
-                break;
             case "adminpanel.jsp":
-                List<User> users2 = new ArrayList();
+                String a_user = request.getParameter("username");
+                String new_name = request.getParameter("newusername");
+                String b_user = request.getParameter("access_username");
+                System.out.println(a_user + " -- "+new_name+" -- "+b_user);
+                if(a_user == "null"  || new_name == "null" || b_user == "null"){
+                    db = new DBConnect();
+                    db.connect();
+                    
+                    //get the patient counts of each year                   
+                    User u = new User(db.getConn());
+                    int count_12 = u.getCount("2012");
+                    int count_13 = u.getCount("2013");
+                    int count_14 = u.getCount("2014");
+                    int count_15 = u.getCount("2015");
+                    int count_16 = u.getCount("2016");
+                    int count_17 = u.getCount("2017");
+                    
+                    //set the variables
+                    request.setAttribute("num_2012", count_12);
+                    request.setAttribute("num_2013", count_13);
+                    request.setAttribute("num_2014", count_14);
+                    request.setAttribute("num_2015", count_15);
+                    request.setAttribute("num_2016", count_16);
+                    request.setAttribute("num_2017", count_17);                    
+                    
+                    //go to databasepanel   
+                    request.getRequestDispatcher("databasepanel.jsp").forward(request, response);
+                }else{
+                    workAdmin(request, response);
+                }                
+                break;
+            case "databasepanel.jsp":                
+                //Get database connection
                 db = new DBConnect();
-                db.connect();
+                db.connect();                             
+                User u = new User(db.getConn());
+                
+                //Purge the database
+                u.purge("2012");
+                request.setAttribute("announcement", "Purged Patients");       
+                
+                //get the updated patient counts of each year      
+                int count_12 = u.getCount("2012");
+                int count_13 = u.getCount("2013");
+                int count_14 = u.getCount("2014");
+                int count_15 = u.getCount("2015");
+                int count_16 = u.getCount("2016");
+                int count_17 = u.getCount("2017");
 
-                User appUsers = new User(db.getConn());
-                ResultSet allUsers = appUsers.getAllUsers();
-                while (allUsers.next()) {
-                    User one = new User();
-                    one.setUserName(allUsers.getString("USER_NAME"));
-                    one.setLevel(allUsers.getString("LEVEL"));
-                    users2.add(one);
-                }
-
-                request.setAttribute("doctorCount", "8000");
-                request.setAttribute("users", users2);
-                request.getRequestDispatcher("userpanel.jsp").forward(request, response);
-
+                //set the variables
+                request.setAttribute("num_2012", count_12);
+                request.setAttribute("num_2013", count_13);
+                request.setAttribute("num_2014", count_14);
+                request.setAttribute("num_2015", count_15);
+                request.setAttribute("num_2016", count_16);
+                request.setAttribute("num_2017", count_17);
+                
+                //go to databasepanel   
+                request.getRequestDispatcher("databasepanel.jsp").forward(request, response);
                 break;
             case "volunteerpanel.jsp":
-                currentUser = request.getParameter("user");
                 
-                request.setAttribute("user", currentUser);
                 List<User> users = new ArrayList();
                 db = new DBConnect();
                 db.connect();
@@ -234,16 +224,21 @@ public class ControllerServlet extends HttpServlet {
                     String room = null;
                     String bed = null;
                     String count = null;
-                    String visitors = null;
+                    String s_visitor = null;
+                    List<String> visitors = new ArrayList();
                     while (location.next()) {
                         facility = location.getString("FACILITY");
                         floor = location.getString("FLOOR");
                         room = location.getString("ROOM_NUMBER");
                         bed = location.getString("BED_NUMBER");
                         count = location.getString("VISITOR_COUNT");
-                        visitors = location.getString("VISITORS");
+                        s_visitor = location.getString("VISITORS");
                         
                     }
+                    //store visitors into list
+                    String[] split = s_visitor.split(",");
+                    visitors = Arrays.asList(split);
+                    
                     request.setAttribute("v_facility", facility);
                     request.setAttribute("v_floor", floor);
                     request.setAttribute("v_room", room);
@@ -255,7 +250,7 @@ public class ControllerServlet extends HttpServlet {
                 }
                 break;
             case "officepanel.jsp":
-                workOffice(request);
+                workOffice(request, response);
                 request.getRequestDispatcher("officepanel.jsp").forward(request, response);
                 break;
             case "doctorpanel.jsp":
@@ -312,8 +307,7 @@ public class ControllerServlet extends HttpServlet {
     }
 
     /**
-     * Returns a short description of the servlet.
-     *
+     * Returns a short description of the servlet.     *
      * @return a String containing servlet description
      */
     @Override
@@ -321,6 +315,56 @@ public class ControllerServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    
+    private boolean workAdmin(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        
+                
+        String a_user = request.getParameter("username");
+        String newPass = request.getParameter("a_pass");
+        //New user
+        String new_name = request.getParameter("newusername");
+        String new_pass = request.getParameter("newpass");
+        String new_email = request.getParameter("email");
+        String new_access = request.getParameter("newaccess");
+        //Change access                 
+        String b_user = request.getParameter("access_username");
+        String access = request.getParameter("access");
+
+        db = new DBConnect();
+        db.connect();
+
+        User modifyUser = new User(db.getConn());
+        if (!newPass.isEmpty()) {
+            boolean changed = modifyUser.changePassword(a_user, newPass);
+
+            if (changed) {
+                request.setAttribute("announcement", "Updated Password");                
+            } else {
+                request.setAttribute("pass", "failed to change password");                
+            }
+            request.getRequestDispatcher("adminpanel.jsp").forward(request, response);
+        } else if (!new_name.isEmpty()) {
+            boolean changed = modifyUser.addUser(new_name, new_pass, new_access, new_email);
+
+            if (changed) {
+                request.setAttribute("announcement", "User Added");                
+            } else {
+                request.setAttribute("pass", "failed to add user");                
+            }
+            request.getRequestDispatcher("adminpanel.jsp").forward(request, response);
+        } else if (!access.isEmpty()) {
+            boolean changed = modifyUser.changeAccess(b_user, access);
+
+            if (changed) {
+                request.setAttribute("announcement", "Updated Access");                
+            } else {
+                request.setAttribute("pass", "failed to update access");                
+            }
+            request.getRequestDispatcher("adminpanel.jsp").forward(request, response);
+        }
+        return true;
+    }
+    
     private boolean workNurse(HttpServletRequest request) throws Exception{       
 
         String v_found4 = request.getParameter("v_display_name");
@@ -730,10 +774,11 @@ public class ControllerServlet extends HttpServlet {
         return true;
     }
     
-    private boolean workOffice(HttpServletRequest request) throws Exception {
+    private boolean workOffice(HttpServletRequest request,  HttpServletResponse response) throws Exception {
         
         db = new DBConnect();
         db.connect();
+        
         String n_room = request.getParameter("new_RoomNumber");
         String n_City = request.getParameter("new_City");
         String n_Street = request.getParameter("new_Street");
@@ -976,6 +1021,7 @@ public class ControllerServlet extends HttpServlet {
             Patient dbPatient = myPatient.getPatient(array[0], array[1]);
             System.out.println(dbPatient.getDisplayName());
             boolean changeZip = myPatient.changeZip(dbPatient.getId(), n_Zip);
+            System.out.println("1024_CtrServlet_Zip: "+changeZip);
         }
         if (!n_State.isEmpty()) {
             Patient myPatient = new Patient(db.getConn());
@@ -986,17 +1032,23 @@ public class ControllerServlet extends HttpServlet {
             boolean changeState = myPatient.changeState(dbPatient.getId(), n_State);
         }
 
+        
         String v_found2 = request.getParameter("v_display_name");
         List<Patient> patients2 = new ArrayList();
         Patient patient2 = new Patient(db.getConn());
         ResultSet allPatients2 = null;
+       
         if (v_found2.isEmpty()) {
+            //get all patients by first name
             if (!v_first2.isEmpty()) {
                 allPatients2 = patient2.getVolunteerFirst(v_first2);
             }
+            //get all patients by last name
             if (!v_last2.isEmpty()) {
                 allPatients2 = patient2.getVolunteerLast(v_last2);
             }
+            
+            //Now that I have patients, populate the table
             while (allPatients2.next()) {
                 Patient p = new Patient();
                 String first = allPatients2.getString("FIRST_NAME");
@@ -1004,14 +1056,12 @@ public class ControllerServlet extends HttpServlet {
                 String street = allPatients2.getString("STREET");
                 String id = allPatients2.getString("ID");
                 p.setDisplayName(first + " " + last);
-                p.setStreet(street);
-                //   p.setID(id);
+                p.setStreet(street);                
                 patients2.add(p);
             }
             request.setAttribute("patients", patients2);
-
             
-        } else {
+        } else {                        
             Patient patient3 = new Patient(db.getConn());
             String[] s_array = off_display.split(" ");
             Patient dbPatient2 = patient3.getPatient(s_array[0], s_array[1]);//get patient but not stats
@@ -1046,9 +1096,9 @@ public class ControllerServlet extends HttpServlet {
             String Policy_Group_Number = "";
             String Amount_Paid_By_Insurance = "";
 
-            String street = dbPatient2.getStreet();
-            System.out.println("Street: "+street);
+            String street = dbPatient2.getStreet();            
             String zip = dbPatient2.getZip();
+            System.out.println("Line1101_CtrServlet_ZIP: "+zip);
             String state = dbPatient2.getState();
 
             city = dbPatient2.getCity();
@@ -1101,7 +1151,7 @@ public class ControllerServlet extends HttpServlet {
             request.setAttribute("v_display_AdmittanceTime", AdmittanceTime);
             request.setAttribute("v_display_FamilyDoctor", FamilyDoctor);
             request.setAttribute("v_display_Facility", Facility);
-            request.setAttribute("v_display_Floor", Floor);
+            request.setAttribute("v_display_Floor", floorNumber);
             request.setAttribute("v_display_BedNumber", BedNumber);
             request.setAttribute("v_display_DischargeDate", DischargeDate);
             request.setAttribute("v_display_DischargeTime", DischargeTime);

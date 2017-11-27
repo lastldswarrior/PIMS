@@ -8,173 +8,166 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <title>AdminPanel</title>
+      <head>
+        <title>Admin Panel</title>
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                background-color: black;
+            }
+
+            .bg {
+                background-image: url("admin.jpg");                
+                height: 100%; 
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+            }
+        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+        </style>
+    </head>
     
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-    </style>
-    <body class="w3-light-grey">
-        <%-- Java Bean: User --%>
-        <input type="hidden" name="page" value='adminpanel.jsp' /></td><%-- This one works --%>  
+    <body>
+        <form action="ControllerServlet" method="post">
+        <input type="hidden" name="page" value='databasepanel.jsp' /></td><%-- This one works --%>  
+        
+        <%--<input type="hidden" name="myuser" value='${user}'/></td><%-- This one works --%> 
         <!-- Navbar (sit on top) -->
         <div class="w3-top">
             <div class="w3-bar w3-black w3-card-2" id="myNavbar">
                 <div class="w3-bar-item w3-wide"><i class="fa fa-h-square"></i> PIMS</div>
+                <div class="w3-bar-item "><i class="fa fa-bullhorn"></i> Announcement: ${announcement}</div>
                 <!-- Right-sided navbar links -->
-                <div class="w3-right w3-hide-small">     
-                    <div class="w3-bar-item"><i class="fa fa-user"></i> ${user}</div>
+                <div class="w3-right w3-hide-small">                    
+                    <button class="w3-bar-item w3-button w3-block fa-database" style="font-family:Arial, FontAwesome" type="submit">
+                        DB Management                 
+                    </button>
+                    <a class="w3-bar-item w3-button" 
+                       onclick='javascript:window.open("help.pdf", "_doc", "scrollbars=1,resizable=1,height=500,width=750,centerscreen");'
+                       title='Pop Up'><i class="fa fa-info-circle"></i> HELP</a>   
                     <a href="index.jsp" class="w3-bar-item w3-button"><i class="fa fa-arrow-left"></i> BACK TO LOGIN</a>                    
-                </div>
-                <!-- Hide right-floated links on small screens and replace them with a menu icon -->
-
-                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
-                    <i class="fa fa-bars"></i>
-                </a>
+                </div>                
             </div>
         </div>
-
-        <!-- Sidebar/menu -->
-        <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
-            <div class="w3-container w3-row">
-                <div class="w3-col s4">
-                    <img src="/w3images/avatar2.png" class="w3-circle w3-margin-right" style="width:46px">
-                </div>
-                <div class="w3-col s8 w3-bar">
-                    <span>Welcome, <strong> ${user}</strong></span><br>
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
-                </div>
-            </div>
-            <hr>
-            <div class="w3-container">
-                <h5>Dashboard</h5>
-            </div>
-            <form name="Admin" action="ControllerServlet" method="post">
-            <div class="w3-bar-block">
-                <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-                <a href="index.jsp" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Overview</a>
-                <a href="report.jsp" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Reports</a>
-                <a href="admin.jsp" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw" ></i>  Users</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Geo</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Orders</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  General</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a><br><br>
-            </div>
+        </form>            
+        <!-- !PAGE CONTENT! -->            
+        <div class="bg">
+            <form action="ControllerServlet" method="post">
+            <input type="hidden" name="page" value='adminpanel.jsp' /><%-- This one works &zwnj;--%>    
+            <div class="w3-row-padding" style='margin-left: 80px;'>
+                <br><br>         
+                    
+                    <div class="w3-col s3 w3-opacity-min w3-white w3-round-large">                    
+                        <table>
+                            <tr>
+                                <div class="w3-container w3-center">
+                                    <h2>Change User Password</h2>
+                                </div>
+                            </tr>
+                            <tr>
+                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                   name="username" type="text" placeholder="&#xf007; User Name">
+                            </tr>
+                            <br>
+                            <tr>
+                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                   name="a_pass" type="password" placeholder="&#xf0e0; New Password" >
+                            </tr>
+                            <br>
+                            <tr>
+                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black w3-hover-blue" 
+                                    style="font-family:Arial, FontAwesome" type="submit">Change Password                 
+                            </button>
+                            </tr>
+                        </table>   
+                    </div>
+                
+                    <div class="w3-col s1 w3-center">&zwnj;</div>
+                    <div class="w3-col s3 w3-opacity-min w3-white w3-round-large">                    
+                        <table>
+                            <tr>
+                                <div class="w3-container w3-center">
+                                    <h2>Add New User</h2>
+                                </div>
+                            </tr>
+                            <table>                                
+                                <tr>
+                                <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                       name="newusername" type="text" placeholder="&#xf007; User Name">
+                                </tr>
+                                <br>
+                                <tr>
+                                <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                       name="email" type="text" placeholder="&#xf0e0; Email">
+                                </tr>
+                                <br>
+                                <tr>
+                                <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                       name="newpass" type="password" placeholder="&#xf023; New Password">
+                                </tr>
+                                <br>
+                                <tr>
+                                <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                       name="newpass2" type="password" placeholder="&#xf023; Confirm Password">
+                                </tr>
+                                <br>
+                                <tr>
+                                <select class="w3-select w3-round-large w3-large w3-border" name="level">
+                                    <option value="" disabled selected>Select Level of Access</option>
+                                    <option value="Volunteer">Volunteer</option>
+                                    <option value="Office">Office Staff</option>
+                                    <option value="Nurse">Medical Professional</option>
+                                    <option value="Doctor">Doctor</option>
+                                </select>
+                                <br>
+                                <br>
+                                <tr>
+                                <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black w3-hover-green" 
+                                        style="font-family:Arial, FontAwesome"type="submit">Add User                   
+                                </button>
+                                </tr>
+                            </table>                             
+                    </div>
+                    <div class="w3-col s1 w3-center">&zwnj;</div>
+                    <div class="w3-col s3 w3-opacity-min w3-white w3-round-large">                    
+                        <table>
+                            <tr>
+                                <div class="w3-container w3-center">
+                                    <h2>Change User Access</h2>
+                                </div>
+                            </tr>
+                            <tr>
+                            <input class="w3-input w3-round-large w3-large w3-border" style="font-family:Arial, FontAwesome" 
+                                   name="access_username" type="text" placeholder="&#xf007; User Name">
+                            </tr>
+                            <br>
+                            <tr>
+                            <select class="w3-select w3-round-large w3-large w3-border" name="access">
+                                    <option value="" disabled selected>Select Level of Access</option>
+                                    <option value="Volunteer">Volunteer</option>
+                                    <option value="Office">Office Staff</option>
+                                    <option value="Nurse">Medical Professional</option>
+                                    <option value="Doctor">Doctor</option>
+                                </select>
+                            <br><br>
+                            <tr>
+                            <button class="w3-button w3-block w3-round-large w3-large w3-border w3-black w3-hover-red" 
+                                    style="font-family:Arial, FontAwesome" type="submit">Change Access                 
+                            </button>
+                            </tr>
+                        </table>
+                    </div>
+                
             </form>
-        </nav>
         
-        <!-- Overlay effect when opening sidebar on small screens -->
-        <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-        <!-- !PAGE CONTENT! -->
-        <div class="w3-main" style="margin-left:300px;margin-top:43px;">
-
-            <!-- Header -->
-            <header class="w3-container" style="padding-top:22px">
-                <h5><b><i class="fa fa-users fa-fw"></i> Users</b></h5>
-            </header>
-
-            <div class="w3-row-padding w3-margin-bottom">
-                <div class="w3-quarter">
-                    <div class="w3-container w3-red w3-padding-16">
-                        <div class="w3-left"><i class="fa fa-user-md w3-xxxlarge"></i></div>
-                        <div class="w3-right">
-                            <h3>90</h3>
-                        </div>
-                        <div class="w3-clear"></div>
-                        <h4>Doctors</h4>
-                    </div>
-                </div>
-                <div class="w3-quarter">
-                    <div class="w3-container w3-blue w3-padding-16">
-                        <div class="w3-left"><i class="fa fa-stethoscope w3-xxxlarge"></i></div>
-                        <div class="w3-right">
-                            <h3>99</h3>
-                        </div>
-                        <div class="w3-clear"></div>
-                        <h4>Nurses</h4>
-                    </div>
-                </div>
-                <div class="w3-quarter">
-                    <div class="w3-container w3-teal w3-padding-16">
-                        <div class="w3-left"><i class="fa fa-hospital-o w3-xxxlarge"></i></div>
-                        <div class="w3-right">
-                            <h3>23</h3>
-                        </div>
-                        <div class="w3-clear"></div>
-                        <h4>Office</h4>
-                    </div>
-                </div>
-                <div class="w3-quarter">
-                    <div class="w3-container w3-orange w3-text-white w3-padding-16">
-                        <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
-                        <div class="w3-right">
-                            <h3>200</h3>
-                        </div>
-                        <div class="w3-clear"></div>
-                        <h4>Volunteers</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="w3-container">                
-                <a href="admin.jsp" class="w3-btn w3-blue w3-round-xlarge">Add New User</a>
-                <a href="admin.jsp" class="w3-btn w3-blue w3-round-xlarge">Change User Password</a>
-                <a href="admin.jsp" class="w3-btn w3-blue w3-round-xlarge">Change User Access</a>
-                
-            </div>
-            <br>
-            <div class="w3-container">
-                <table class="w3-table w3-striped w3-bordered w3-border w3-black w3-white">
-                    <tr>
-                        <td>Account Names</td>
-                        <td>Level of Access</td>
-                    </tr>   
-                </table>                  
-                
-                <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-                    <c:forEach items="${users}" var="user">
-                        <tr>
-                            <td><c:out value="${user.userName}" /></td>
-                            <td><c:out value="${user.level}" /></td>
-                        </tr>
-                    </c:forEach>
-                </table><br>                
-            </div>
-            <!-- End page content -->
         </div>
-
-        <script>
-        // Get the Sidebar
-            var mySidebar = document.getElementById("mySidebar");
-
-        // Get the DIV with overlay effect
-            var overlayBg = document.getElementById("myOverlay");
-
-        // Toggle between showing and hiding the sidebar, and add overlay effect
-            function w3_open() {
-                if (mySidebar.style.display === 'block') {
-                    mySidebar.style.display = 'none';
-                    overlayBg.style.display = "none";
-                } else {
-                    mySidebar.style.display = 'block';
-                    overlayBg.style.display = "block";
-                }
-            }
-
-        // Close the sidebar with the close button
-            function w3_close() {
-                mySidebar.style.display = "none";
-                overlayBg.style.display = "none";
-            }
-        </script>
-
     </body>
 </html>

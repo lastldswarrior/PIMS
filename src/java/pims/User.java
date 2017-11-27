@@ -205,4 +205,48 @@ public class User {
             return false;
         }
     }
+    
+    public int getCount(String year){
+        int count = 0;
+        try {
+            String statement
+                    = "SELECT "
+                    + "COUNT(*) "
+                    + "FROM "
+                    + "PATIENTDB.LOCATION "
+                    + "WHERE "
+                    + "DISCHARGED_DATE like '%"+year+"'";
+                    
+            PreparedStatement pst = conn.prepareStatement(statement);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                count = Integer.parseInt(rs.getString(1));
+            }
+            
+            return count;
+            
+        } catch (SQLException ex) {
+            return -1;
+        }
+    }
+
+    public boolean purge(String year) {
+        try {
+            String thinning = "DELETE FROM PATIENTDB.PATIENT "
+                    + "WHERE ID = ("
+                    + "select id "
+                    + "from location "
+                    + "where discharged_date like '%"+year+"' and id = 3507)";//TODO: remove id so we can purge all 2012
+                   
+            System.out.println(thinning);
+            PreparedStatement ps = conn.prepareStatement(thinning);
+            ps.execute();
+
+            return true;
+
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
 }

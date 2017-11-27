@@ -4,9 +4,17 @@
         <servlet-name>Reports</servlet-name>
         <servlet-class>pims.ReportServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BillServlet</servlet-name>
+        <servlet-class>pims.BillServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Reports</servlet-name>
         <url-pattern>/Reports</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BillServlet</servlet-name>
+        <url-pattern>/BillServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

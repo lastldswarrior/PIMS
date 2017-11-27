@@ -75,14 +75,16 @@
             </script>
         
     </head>
-    <body>
+    <body style='zoom:60%'>
          <!-- Navbar (sit on top) -->
         <div class="w3-top">
             <div class="w3-bar w3-white w3-card-2" id="myNavbar">
                 <div class="w3-bar-item w3-wide"><i class="fa fa-h-square"></i> PIMS</div>
                 <!-- Right-sided navbar links -->
                 <div class="w3-right w3-hide-small">
-                    
+                    <a class="w3-bar-item w3-button" 
+                       onclick='javascript:window.open("help.pdf", "_doc", "scrollbars=1,resizable=1,height=500,width=750,centerscreen");'
+                       title='Pop Up'><i class="fa fa-info-circle"></i> HELP</a> 
                     <a href="index.jsp" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i> SIGN OUT</a>                    
                 </div>
                 <!-- Hide right-floated links on small screens and replace them with a menu icon -->

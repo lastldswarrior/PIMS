@@ -18,8 +18,11 @@
             }
 
             .bg {
+
                 background-image: url("loginScreen.jpg");
+
                 height: 60%; 
+
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
@@ -59,15 +62,18 @@
             </script>
         
     </head>
-    <body>
+    <body style='zoom:60%'>
         <!-- Navbar (sit on top) -->
         <div class="w3-top">
             <div class="w3-bar w3-white w3-card-2" id="myNavbar">
                 <div class="w3-bar-item w3-wide"><i class="fa fa-h-square"></i> PIMS</div>
                 <!-- Right-sided navbar links -->
                 <div class="w3-right w3-hide-small">
-                    
-                    <a href="report.jsp" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i> REPORTS</a>
+                    <a href="bill.jsp" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> BILL PATIENT</a>
+                    <a href="report.jsp" class="w3-bar-item w3-button"><i class="fa fa-file"></i> REPORTS</a>
+                    <a class="w3-bar-item w3-button" 
+                       onclick='javascript:window.open("help.pdf", "_doc", "scrollbars=1,resizable=1,height=500,width=750,centerscreen");'
+                       title='Pop Up'><i class="fa fa-info-circle"></i> HELP</a> 
                     <a href="index.jsp" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i> SIGN OUT</a>                    
                 </div>
                 <!-- Hide right-floated links on small screens and replace them with a menu icon -->
@@ -77,11 +83,12 @@
             </div>
         </div>
         <div class="bg" id='maincontainer'>
-            <form name="Volunteer" id="vPage" action="" method="post"> 
+            
+           <form name="Volunteer" id="vPage" action="" method="post"> 
                 <input type="hidden" name="page" value='officepanel.jsp' /><%-- This one works --%>
                 <br><br>
                 <div class="w3-row-padding">
-                    <div class="w3-col s1 w3-center"000000000>&zwnj;</div>
+                    <div class="w3-col s1 w3-center" style="width:100px">&zwnj;</div>
                     <div class="w3-col s4" style="">
                     <table style="">
                         <tr>

@@ -9,6 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -292,7 +298,7 @@ public class Patient {
                     + "UPPER(p.LAST_NAME) like UPPER('" + upper_last + "') "
                     + "and UPPER(p.FIRST_NAME) like UPPER('" + upper_first + "') "
                     + "and p.id = t.id";
-            System.out.println("contact = " + statement);
+            System.out.println(statement);
             PreparedStatement pst = conn.prepareStatement(statement);
             ResultSet rs = pst.executeQuery();
 
@@ -307,7 +313,7 @@ public class Patient {
     public ResultSet getInsurance(Patient p) {
         String upper_first = p.getFirstName().toUpperCase();
         String upper_last = p.getLastName().toUpperCase();
-        System.out.println("Treatment function called");
+        
         try {
             String statement
                     = "SELECT "
@@ -322,14 +328,14 @@ public class Patient {
                     + "UPPER(p.LAST_NAME) like UPPER('" + upper_last + "') "
                     + "and UPPER(p.FIRST_NAME) like UPPER('" + upper_first + "') "
                     + "and p.id = i.id";
-            System.out.println("contact = " + statement);
+            System.out.println(statement);
             PreparedStatement pst = conn.prepareStatement(statement);
             ResultSet rs = pst.executeQuery();
 
             return rs;
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            
             return null;
         }
     }
@@ -362,11 +368,11 @@ public class Patient {
         }
     }
 
-    public boolean changeAmountPaidByInsurance(String id, String phone_number) {
+    public boolean changeAmountPaidByInsurance(String id, String amount) {
         try {
             String access = "UPDATE PATIENTDB.INSURANCE "
                     + "SET "
-                    + "AMOUNT_PAID_BY_INSURANCE = '" + phone_number + "' "
+                    + "AMOUNT_PAID_BY_INSURANCE = "+ amount +" "
                     + "WHERE "
                     + "INSURANCE.ID = " + id + "";
 
@@ -514,11 +520,11 @@ public class Patient {
         }
     }
 
-    public boolean changePolicyGroupNumber(String id, String phone_number) {
+    public boolean changePolicyGroupNumber(String id, String groupNum) {
         try {
             String access = "UPDATE PATIENTDB.INSURANCE "
                     + "SET "
-                    + "POLICY_GROUP_NUMBER = '" + phone_number + "' "
+                    + "POLICY_GROUP_NUMBER = "+ groupNum +" "
                     + "WHERE "
                     + "INSURANCE.ID = " + id + "";
 
@@ -533,11 +539,11 @@ public class Patient {
         }
     }
 
-    public boolean changePolicyAccountNumber(String id, String phone_number) {
+    public boolean changePolicyAccountNumber(String id, String acctNum) {
         try {
             String access = "UPDATE PATIENTDB.INSURANCE "
                     + "SET "
-                    + "POLICY_ACCOUNT_NUMBER = '" + phone_number + "' "
+                    + "POLICY_ACCOUNT_NUMBER = "+ acctNum +" "
                     + "WHERE "
                     + "INSURANCE.ID = " + id + "";
 
@@ -609,11 +615,11 @@ public class Patient {
         }
     }
 
-    public boolean changeFloor(String id, String phone_number) {
+    public boolean changeFloor(String id, String floor) {
         try {
             String access = "UPDATE PATIENTDB.LOCATION "
                     + "SET "
-                    + "FLOOR_NUMBER = '" + phone_number + "' "
+                    + "FLOOR = '" + floor + "' "
                     + "WHERE "
                     + "LOCATION.ID = " + id + "";
 
@@ -647,11 +653,11 @@ public class Patient {
         }
     }
 
-    public boolean changeAddmittanceTime(String id, String phone_number) {
+    public boolean changeAddmittanceTime(String id, String time) {
         try {
             String access = "UPDATE PATIENTDB.TREATMENT "
                     + "SET "
-                    + "ADMITTANCE_TIME = '" + phone_number + "' "
+                    + "ADMITTANCE_TIME = '" + time + "' "
                     + "WHERE "
                     + "TREATMENT.ID = " + id + "";
 
@@ -723,11 +729,11 @@ public class Patient {
         }
     }
 
-    public boolean changeAdmittanceDate(String id, String phone_number) {
+    public boolean changeAdmittanceDate(String id, String date) {
         try {
             String access = "UPDATE PATIENTDB.TREATMENT "
                     + "SET "
-                    + "ADMITTANCE_DATE = '" + phone_number + "' "
+                    + "ADMITTANCE_DATE = DATE('" + date + "') "
                     + "WHERE "
                     + "TREATMENT.ID = " + id + "";
 
@@ -955,11 +961,10 @@ public class Patient {
         try {
             String access = "UPDATE PATIENTDB.PATIENT "
                     + "SET "
-                    + "ZIP = '" + Zip + "' "
+                    + "ZIP = "+ Zip +" "
                     + "WHERE "
                     + "PATIENT.ID = " + id + "";
-
-            System.out.println(access);
+            
             PreparedStatement ps = conn.prepareStatement(access);
             ps.execute();
 
@@ -987,5 +992,70 @@ public class Patient {
         } catch (SQLException ex) {
             return false;
         }
+    }
+    
+    public List<String> getDebts(Patient p){
+        List<String> list = new ArrayList();
+        
+        try {
+            String statement
+                    = "SELECT "
+                        + "billing_id "
+                    + "FROM "
+                        + "PATIENTDB.PATIENT "
+                    + "WHERE "
+                        + "id = "+p.id+"";
+            System.out.println(statement);
+            PreparedStatement pst = conn.prepareStatement(statement);
+            ResultSet rs = pst.executeQuery();
+            String results = null;
+            while(rs.next()){
+                results = rs.getString("BILLING_ID");
+            }
+            
+            //get the bills now
+            String statement2
+                    = "SELECT * "
+                    + "FROM "
+                        + "PATIENTDB.BILLING "
+                    + "WHERE "
+                        + "id IN ("+results+")";
+            System.out.println(statement2);
+            pst = conn.prepareStatement(statement2);
+            rs = pst.executeQuery();
+            
+            while(rs.next()){
+                list.add(rs.getString("SERVICE_NAME"));
+                list.add(rs.getString("SERVICE_CHARGE"));
+            }
+
+            return list;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return null;
+        }        
+    }
+    
+    public ResultSet getInsinfo(Patient p){
+        try {
+            String statement
+                    = "SELECT "
+                    + "* "
+                    + "FROM "
+                    + "PATIENTDB.INSURANCE "
+                    + "WHERE "
+                    + "id = "+p.id+"";
+            
+            System.out.println(statement);
+            PreparedStatement pst = conn.prepareStatement(statement);
+            ResultSet rs = pst.executeQuery();
+            return rs;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Patient.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        
+        
     }
 }

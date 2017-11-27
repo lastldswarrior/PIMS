@@ -19,7 +19,7 @@
 
             .bg {
 
-                background-image: url("loginScreen.jpg");
+                background-image: url("vol.jpg");
 
                 height: 100%; 
 
@@ -45,6 +45,9 @@
                 <!-- Right-sided navbar links -->
                 <div class="w3-right w3-hide-small">  
                     <a href="volunteerpanel.jsp" class="w3-bar-item w3-button"><i class="fa fa-search"></i> SEARCH</a>
+                    <a class="w3-bar-item w3-button" 
+                       onclick='javascript:window.open("help.pdf", "_doc", "scrollbars=1,resizable=1,height=500,width=750,centerscreen");'
+                       title='Pop Up'><i class="fa fa-info-circle"></i> HELP</a> 
                     <a href="index.jsp" class="w3-bar-item w3-button"><i class="fa fa-power-off"></i> SIGN OUT</a>                    
                 </div>
                 <!-- Hide right-floated links on small screens and replace them with a menu icon -->
@@ -60,7 +63,10 @@
             <form name="vResult" id="vResult" action="ControllerServlet" method="post">
                 <br><br><br><br>
                 <div class="w3-row-padding">
-                    <div class="w3-col s2 w3-center">&zwnj;</div>
+                    <!-- Empty space for design look and feel -->
+                    <div class="w3-col s1 w3-center">&zwnj;</div>
+                    
+                    <!-- Patient Information for Volunteer to use for Visitors -->
                     <div class="w3-col s3 w3-white">
                         <br>
                         <label class="w3-text-blue"><b>First Name</b></label>
@@ -71,13 +77,30 @@
 
                         <label class="w3-text-blue"><b>Number of Visitors</b></label>
                         <input class="w3-input w3-border w3-round-large" type="text" value="${v_count}">
-
-                        <label class="w3-text-blue"><b>List of Approved Visitors</b></label>
-                        <input class="w3-input w3-border w3-round-large" type="text" value="${v_list}">
+                        
                         <br>
                     </div>
+                        
+                    <!-- Empty space for design look and feel -->    
                     <div class="w3-col s1 w3-center">&zwnj;</div>
+                    
+                    <!-- List of Approved Visitors Box -->
                     <div class="w3-col s3 w3-white">
+                        <br>                        
+                        <label class="w3-text-blue"><b>List of Approved Visitors</b></label>
+                        <ul class="w3-ul w3-hoverable">
+                            <c:forEach var="visitor" items="${v_list}" >
+                                <li>${visitor}</li>                            
+                            </c:forEach>
+                        </ul>                        
+                        <br>
+                    </div>
+                    
+                    <!-- Empty space for design look and feel -->
+                    <div class="w3-col s1 w3-center">&zwnj;</div>
+                    
+                    <!-- Location info on Patient -->
+                    <div class="w3-col s2 w3-white">
                         <div class="w3-row w3-section">
                                 <div class="w3-rest">
                                     <label class="w3-text-blue"><b>Facility</b></label>
@@ -107,10 +130,12 @@
                                 </div>
                             </div>
                         </div>
-                    <div class="w3-col s3 w3-center">&zwnj;</div>
+                                
+                    <!-- Empty space for design look and feel -->            
+                    <div class="w3-col s1 w3-center">&zwnj;</div>
+                    
                 </div>
             </form>    
-        </div>
-        
+        </div>        
     </body>
 </html>
